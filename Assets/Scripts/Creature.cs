@@ -2,21 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class Creature : MonoBehaviour
 {
-    private Rigidbody2D rb;
-    private Vector2 targetPosition;
-    private bool isMoving = false;
-    public float speed = 5f;
+    Rigidbody2D rb; // Класс, описывающий физику объекта 
+    Vector2 targetPosition; // Позиция, в которую движется объект класса
+    bool isMoving = false; // Нобходимо для проверки, находится ли объект класса в движении
+    float speed = 5f; // Скорость 
+    int energy = 100; // Энергия 
+    float size = 1; // Размер 
 
-    private void Start()
+    void Start() // Метод, вызываемый при воспроизведении первого кадра
     {
-        rb = GetComponent<Rigidbody2D>();
+        rb = GetComponent<Rigidbody2D>(); // Получает ссылку на указанный объект класса
+        Vector3 sizetoscale = new Vector3(size, size); // Вектор для присвоения размера
+        transform.localScale = sizetoscale; // Присвоение стартового размера объекта класса
         Move();
     }
 
-    private void Update()
+    void Update() // Метод, вызываемый каждый кадр
     {
         if (!isMoving)
         {
@@ -24,14 +27,7 @@ public class Creature : MonoBehaviour
         }
     }
 
-    private void Move()
-    {
-        targetPosition = new Vector2(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height));
-        targetPosition = Camera.main.ScreenToWorldPoint(targetPosition);
-        isMoving = true;
-    }
-
-    private void FixedUpdate()
+    void FixedUpdate() //
     {
         if (isMoving)
         {
@@ -49,11 +45,35 @@ public class Creature : MonoBehaviour
             }
         }
     }
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    // Метод, реагирующий на контакты с другими объектами
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Wall"))
         {
             Move();
         }
+    }
+
+    void Move() // Метод передвижения
+    {
+        targetPosition = new Vector2(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height));
+        targetPosition = Camera.main.ScreenToWorldPoint(targetPosition);
+        isMoving = true;
+    }
+
+    void Die() // Метод смерти
+    {
+
+    }
+
+    void Eat() // Метод питания
+    {
+
+    }
+
+    void Mutate() // Метод мутирования
+    {
+
     }
 }
