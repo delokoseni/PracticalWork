@@ -85,8 +85,15 @@ public class Creature : MonoBehaviour
     void Eat() // Метод питания
     {
 
+        if (energy == 100)
+            Multiply();
     }
 
+    void Multiply()
+    {
+
+        //Mutate();
+    }
     void Mutate() // Метод мутирования
     {
 
