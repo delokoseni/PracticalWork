@@ -5,10 +5,13 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     public GameObject creaturePrefab;
+    public GameObject plantPrefab;
     public int numberOfCreatures;
+    public int numberOfPlants;
 
     private void Start()
     {
+        SpawnPlant();
         SpawnCreature();
     }
 
@@ -19,6 +22,16 @@ public class Spawner : MonoBehaviour
             Vector3 randomPosition = new Vector3(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height), 0f);
             Vector3 spawnPosition = Camera.main.ScreenToWorldPoint(randomPosition);
             GameObject newcreature = Instantiate(creaturePrefab, spawnPosition, Quaternion.identity);
+        }
+    }
+
+    void SpawnPlant()
+    {
+        for (int i = 0; i < numberOfPlants; i++)
+        {
+            Vector3 randomPosition = new Vector3(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height), 0f);
+            Vector3 spawnPosition = Camera.main.ScreenToWorldPoint(randomPosition);
+            GameObject newcreature = Instantiate(plantPrefab, spawnPosition, Quaternion.identity);
         }
     }
 }

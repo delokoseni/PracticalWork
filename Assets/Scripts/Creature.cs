@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Creature : MonoBehaviour
@@ -8,7 +9,8 @@ public class Creature : MonoBehaviour
     Vector2 targetPosition; // Позиция, в которую движется объект класса
     bool isMoving = false; // Нобходимо для проверки, находится ли объект класса в движении
     float speed = 5f; // Скорость 
-    int energy = 100; // Энергия 
+    int startenergy = 100; // Стартовая энергия 
+    int energy; // Текущая энергия 
     float size = 1; // Размер 
     float time = 1f; // Время, за которое расходуется 1 единица энергии
 
@@ -17,6 +19,7 @@ public class Creature : MonoBehaviour
         rb = GetComponent<Rigidbody2D>(); // Получает ссылку на указанный объект класса
         Vector3 sizetoscale = new Vector3(size, size); // Вектор для присвоения размера
         transform.localScale = sizetoscale; // Присвоение стартового размера объекта класса
+        energy = startenergy;
         Move(); 
         InvokeRepeating("Decreaseenergy", time, time); //Каждое time кол-во времени вызывается метод
     }
@@ -49,7 +52,7 @@ public class Creature : MonoBehaviour
     }
 
     // Метод, реагирующий на контакты с другими объектами
-    void OnCollisionEnter2D(Collision2D collision)
+    unsafe void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Wall")) // Попытка исправить прилипание к стенам
         {
@@ -58,6 +61,10 @@ public class Creature : MonoBehaviour
         if (collision.gameObject.CompareTag("Creature")) // Попытка исправить слипание между собой
         {
             isMoving = false;
+        }
+        if (collision.gameObject.CompareTag("Plant")) 
+        {
+            Eat(collision.gameObject.GetComponent<Plant>());
         }
     }
 
@@ -82,9 +89,12 @@ public class Creature : MonoBehaviour
         Destroy(gameObject);
     }
 
-    void Eat() // Метод питания
+    unsafe void Eat(Plant plant) // Метод питания
     {
-
+        int receivedenergy = plant.Die();
+        energy += receivedenergy;
+        if (energy > startenergy)
+            energy = startenergy;
         if (energy == 100)
             Multiply();
     }

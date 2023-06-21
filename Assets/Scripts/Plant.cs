@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Plant : MonoBehaviour
 {
+    int energy = 20; // Энергия, которая будет отдана при съедении
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,5 +16,11 @@ public class Plant : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public int Die()
+    {
+        Destroy(gameObject);
+        return energy;
     }
 }
