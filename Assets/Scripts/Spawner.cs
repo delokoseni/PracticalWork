@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public GameObject creaturePrefab;
-    public GameObject plantPrefab;
-    public int numberOfCreatures;
-    public int numberOfPlants;
-
+    public GameObject creaturePrefab; //
+    public GameObject plantPrefab; //
+    public int numberOfCreatures; //
+    public int numberOfPlants; //
+    float time = 20f; // Время, через которое еда снова появится
     private void Start()
     {
-        SpawnPlant();
+        InvokeRepeating("SpawnPlant", 0, time);
         SpawnCreature();
     }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class Creature : MonoBehaviour
@@ -13,6 +14,7 @@ public class Creature : MonoBehaviour
     int energy; // Текущая энергия 
     float size = 1; // Размер 
     float time = 1f; // Время, за которое расходуется 1 единица энергии
+    public GameObject creaturePrefab; // 
 
     void Start() // Метод, вызываемый при воспроизведении первого кадра
     {
@@ -52,7 +54,7 @@ public class Creature : MonoBehaviour
     }
 
     // Метод, реагирующий на контакты с другими объектами
-    unsafe void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Wall")) // Попытка исправить прилипание к стенам
         {
@@ -89,7 +91,7 @@ public class Creature : MonoBehaviour
         Destroy(gameObject);
     }
 
-    unsafe void Eat(Plant plant) // Метод питания
+    void Eat(Plant plant) // Метод питания
     {
         int receivedenergy = plant.Die();
         energy += receivedenergy;
@@ -101,8 +103,9 @@ public class Creature : MonoBehaviour
 
     void Multiply()
     {
-
-        //Mutate();
+        Vector3 spawnPosition = transform.position;
+        GameObject newcreature = Instantiate(creaturePrefab, spawnPosition, Quaternion.identity);
+        Mutate();
     }
     void Mutate() // Метод мутирования
     {
