@@ -14,6 +14,7 @@ public class Creature : MonoBehaviour
     int energy; // Текущая энергия 
     float size = 1; // Размер 
     float time = 1f; // Время, за которое расходуется 1 единица энергии
+    int chanceOfMutation = 100; // Шанс, с которым потомок сможет мутировать
     public GameObject creaturePrefab; // 
 
     void Start() // Метод, вызываемый при воспроизведении первого кадра
@@ -22,16 +23,15 @@ public class Creature : MonoBehaviour
         Vector3 sizetoscale = new Vector3(size, size); // Вектор для присвоения размера
         transform.localScale = sizetoscale; // Присвоение стартового размера объекта класса
         energy = startenergy;
-        Move(); 
+        transform.localScale = new Vector3(size, size, 0);
+        targetPosition = new Vector2(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height));
+        Move(targetPosition);
         InvokeRepeating("Decreaseenergy", time, time); //Каждое time кол-во времени вызывается метод
     }
 
     void Update() // Метод, вызываемый каждый кадр
     {
-        if (!isMoving)
-        {
-            Move();
-        }
+
     }
 
     void FixedUpdate() //
@@ -51,6 +51,12 @@ public class Creature : MonoBehaviour
                 isMoving = false;
             }
         }
+        else
+        {
+            Vector2 newtargetPosition = new Vector2(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height));
+            targetPosition = newtargetPosition;
+            Move(newtargetPosition);
+        }
     }
 
     // Метод, реагирующий на контакты с другими объектами
@@ -58,11 +64,15 @@ public class Creature : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Wall")) // Попытка исправить прилипание к стенам
         {
-            isMoving = false;
+            Vector2 newtargetPosition = new Vector2(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height));
+            targetPosition = newtargetPosition;
+            Move(newtargetPosition);
         }
         if (collision.gameObject.CompareTag("Creature")) // Попытка исправить слипание между собой
         {
-            isMoving = false;
+            Vector2 newtargetPosition = new Vector2(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height));
+            targetPosition = newtargetPosition;
+            Move(newtargetPosition);
         }
         if (collision.gameObject.CompareTag("Plant")) 
         {
@@ -70,17 +80,16 @@ public class Creature : MonoBehaviour
         }
     }
 
-    void Move() // Метод передвижения
+    void Move(Vector2 newPosition) // Метод передвижения
     {
-        targetPosition = new Vector2(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height));
-        targetPosition = Camera.main.ScreenToWorldPoint(targetPosition);
+        targetPosition = Camera.main.ScreenToWorldPoint(newPosition);
         isMoving = true;
     }
 
-    void Decreaseenergy()
+    void Decreaseenergy() // Метод утраты энергии
     {
         energy--;
-        if (energy <= 0)
+        if (energy == 0)
         {
             Die();
         }
@@ -101,14 +110,57 @@ public class Creature : MonoBehaviour
             Multiply();
     }
 
-    void Multiply()
+    void Multiply() // Метод размножения
     {
         Vector3 spawnPosition = transform.position;
         GameObject newcreature = Instantiate(creaturePrefab, spawnPosition, Quaternion.identity);
-        Mutate();
+        Mutate(newcreature.GetComponent<Creature>());
     }
-    void Mutate() // Метод мутирования
-    {
 
+    void Mutate(Creature newcreature) // Метод мутирования
+    {
+        System.Random rand = new System.Random();
+        if(rand.Next(1,101) <= chanceOfMutation)
+        {
+            int n = rand.Next(5);
+            switch (n)
+            {
+                case 0:
+                    n = rand.Next(2);
+                    if (n == 1)
+                        newcreature.speed++;
+                    else
+                        newcreature.speed--;
+                    break;
+                case 1:
+                    n = rand.Next(2);
+                    if (n == 1)
+                        newcreature.startenergy++;
+                    else
+                        newcreature.startenergy--;
+                    break;
+                case 2:
+                    n = rand.Next(2);
+                    if (n == 1)
+                        newcreature.size++;
+                    else
+                        newcreature.size--;
+                    break;
+                case 3:
+                    n = rand.Next(2);
+                    if (n == 1)
+                        newcreature.time++;
+                    else
+                        newcreature.time--;
+                    break;
+                case 4:
+                    n = rand.Next(2);
+                    if (n == 1)
+                        newcreature.chanceOfMutation++;
+                    else
+                        newcreature.chanceOfMutation--;
+                    break;
+            }
+        }
     }
 }

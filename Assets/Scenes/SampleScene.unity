@@ -229,7 +229,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   creaturePrefab: {fileID: 4355581387330313372, guid: 8d26eee7909532d439e387e1dda3f142, type: 3}
-  numberOfCreatures: 3
+  plantPrefab: {fileID: 1271740837097487500, guid: 206c018bebe838c40b6133d5360a3fa8, type: 3}
+  numberOfCreatures: 1
+  numberOfPlants: 3
 --- !u!1 &529258374
 GameObject:
   m_ObjectHideFlags: 0
