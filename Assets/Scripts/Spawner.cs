@@ -19,7 +19,7 @@ public class Spawner : MonoBehaviour
     {
         for (int i = 0; i < numberOfCreatures; i++)
         {
-            Vector3 randomPosition = new Vector3(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height), 0f);
+            Vector3 randomPosition = new Vector3(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height), 1f);
             Vector3 spawnPosition = Camera.main.ScreenToWorldPoint(randomPosition);
             GameObject newcreature = Instantiate(creaturePrefab, spawnPosition, Quaternion.identity);
         }
@@ -29,7 +29,7 @@ public class Spawner : MonoBehaviour
     {
         for (int i = 0; i < numberOfPlants; i++)
         {
-            Vector3 randomPosition = new Vector3(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height), 0f);
+            Vector3 randomPosition = new Vector3(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height), 1f);
             Vector3 spawnPosition = Camera.main.ScreenToWorldPoint(randomPosition);
             GameObject newcreature = Instantiate(plantPrefab, spawnPosition, Quaternion.identity);
         }
