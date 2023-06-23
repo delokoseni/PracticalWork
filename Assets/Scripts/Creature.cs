@@ -15,6 +15,7 @@ public class Creature : MonoBehaviour
     float size = 1; // Размер 
     float time = 1f; // Время, за которое расходуется 1 единица энергии
     int chanceOfMutation = 100; // Шанс, с которым потомок сможет мутировать
+    Color32 color; // Цвет существа
     public GameObject creaturePrefab; // 
 
     void Start() // Метод, вызываемый при воспроизведении первого кадра
@@ -131,6 +132,7 @@ public class Creature : MonoBehaviour
                         newcreature.speed++;
                     else
                         newcreature.speed--;
+                    newcreature.GetComponent<SpriteRenderer>().color -= new Color32(5, 0, 0, 0);
                     break;
                 case 1:
                     n = rand.Next(2);
@@ -138,6 +140,7 @@ public class Creature : MonoBehaviour
                         newcreature.startenergy++;
                     else
                         newcreature.startenergy--;
+                    newcreature.GetComponent<SpriteRenderer>().color -= new Color32(0, 5, 0, 0);
                     break;
                 case 2:
                     n = rand.Next(2);
@@ -145,6 +148,7 @@ public class Creature : MonoBehaviour
                         newcreature.size++;
                     else
                         newcreature.size--;
+                    newcreature.GetComponent<SpriteRenderer>().color -= new Color32(0, 0, 5, 0);
                     break;
                 case 3:
                     n = rand.Next(2);
@@ -152,6 +156,7 @@ public class Creature : MonoBehaviour
                         newcreature.time++;
                     else
                         newcreature.time--;
+                    newcreature.GetComponent<SpriteRenderer>().color -= new Color32(5, 0, 5, 0);
                     break;
                 case 4:
                     n = rand.Next(2);
@@ -159,6 +164,7 @@ public class Creature : MonoBehaviour
                         newcreature.chanceOfMutation++;
                     else
                         newcreature.chanceOfMutation--;
+                    newcreature.GetComponent<SpriteRenderer>().color -= new Color32(5, 5, 0, 0);
                     break;
             }
         }
