@@ -234,10 +234,10 @@ RectTransform:
   m_Father: {fileID: 1768458246}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 668.89044, y: 256}
-  m_SizeDelta: {x: 191.33, y: 30}
+  m_AnchorMin: {x: 0.7608964, y: 0.7463043}
+  m_AnchorMax: {x: 0.94900006, y: 0.79}
+  m_AnchoredPosition: {x: -101.10956, y: 0.5}
+  m_SizeDelta: {x: -214.66998, y: -13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &383777193
 MonoBehaviour:
@@ -482,7 +482,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creaturePrefab: {fileID: 4355581387330313372, guid: 8d26eee7909532d439e387e1dda3f142, type: 3}
   plantPrefab: {fileID: 1271740837097487500, guid: 206c018bebe838c40b6133d5360a3fa8, type: 3}
+  predatorPrefab: {fileID: 1966413735974384274, guid: 67fee3977559e2441bd0cecbdc43aff0, type: 3}
+  scavengerPrefab: {fileID: 7075547260025384249, guid: 752b34ac6dcb9af40aa1dac549b78c3b, type: 3}
   numberOfCreatures: 1
+  numberOfPredators: 1
+  numberOfScavengers: 1
   numberOfPlants: 3
 --- !u!1 &524542175
 GameObject:
@@ -935,10 +939,10 @@ RectTransform:
   m_Father: {fileID: 1768458246}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 125.46856, y: 111.96909}
-  m_SizeDelta: {x: -895.24963, y: -446.0618}
+  m_AnchorMin: {x: 0.7608964, y: 0.841}
+  m_AnchorMax: {x: 0.94900006, y: 0.8880001}
+  m_AnchoredPosition: {x: -101.53143, y: 2.4690857}
+  m_SizeDelta: {x: -215.24963, y: -15.061798}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &542971760
 MonoBehaviour:
@@ -1599,7 +1603,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 928709476}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1768458247}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: StopWasClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &928709476
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2835,7 +2851,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1243211591}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1768458247}
+        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
+        m_MethodName: SaveData
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1243211591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3042,10 +3070,10 @@ RectTransform:
   m_Father: {fileID: 1768458246}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 333.5, y: -21.999998}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchorMin: {x: 0.7608964, y: 0.5915313}
+  m_AnchorMax: {x: 0.961, y: 0.624}
+  m_AnchoredPosition: {x: -109.900024, y: -13.800003}
+  m_SizeDelta: {x: -236, y: 17}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1282564181
 MonoBehaviour:
@@ -3094,8 +3122,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
+  m_fontSize: 22
+  m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -3130,7 +3158,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 0, y: 0, z: -202.35287, w: 24.3617}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -3543,7 +3571,7 @@ GameObject:
   - component: {fileID: 1692481073}
   - component: {fileID: 1692481072}
   m_Layer: 5
-  m_Name: Plants inputfields
+  m_Name: Plants inputfield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3565,10 +3593,10 @@ RectTransform:
   m_Father: {fileID: 1768458246}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 313, y: -32.299995}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchorMin: {x: 0.7608964, y: 0.5415797}
+  m_AnchorMax: {x: 0.947, y: 0.577}
+  m_AnchoredPosition: {x: -96.41998, y: 6.4000015}
+  m_SizeDelta: {x: -208.45001, y: -4}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1692481072
 MonoBehaviour:
@@ -4104,14 +4132,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 836361e4c0f6a81429e09b127ee72365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  herbivoresText: {fileID: 0}
-  predatorsText: {fileID: 0}
-  scavangersText: {fileID: 0}
-  plantsText: {fileID: 0}
-  herbivoresInputField: {fileID: 0}
-  predatorsInputField: {fileID: 0}
-  scavangersInputField: {fileID: 0}
-  plantsInputField: {fileID: 0}
+  herbivoresText: {fileID: 2145899144}
+  predatorsText: {fileID: 1259755475}
+  scavangersText: {fileID: 1041979594}
+  plantsText: {fileID: 1282564181}
+  herbivoresInputField: {fileID: 542971760}
+  predatorsInputField: {fileID: 383777193}
+  scavangersInputField: {fileID: 1969313200}
+  plantsInputField: {fileID: 1692481072}
+  startButton: {fileID: 1243211590}
+  pouseButton: {fileID: 889824973}
+  stopButton: {fileID: 928709475}
 --- !u!1 &1969313198
 GameObject:
   m_ObjectHideFlags: 0
@@ -4147,10 +4178,10 @@ RectTransform:
   m_Father: {fileID: 1768458246}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 313, y: 22.4}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchorMin: {x: 0.7608964, y: 0.642}
+  m_AnchorMax: {x: 0.947, y: 0.68500006}
+  m_AnchoredPosition: {x: -97.94, y: 0.8999939}
+  m_SizeDelta: {x: -210.68, y: -12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1969313200
 MonoBehaviour:

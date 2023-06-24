@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Creature : MonoBehaviour
 {
-    Rigidbody2D rb; // Класс, описывающий физику объекта 
+    public Rigidbody2D rb; // Класс, описывающий физику объекта 
     Vector2 targetPosition; // Позиция, в которую движется объект класса
     bool isMoving = false; // Нобходимо для проверки, находится ли объект класса в движении
     float speed = 5f; // Скорость 
@@ -81,6 +81,16 @@ public class Creature : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        UIManager.TheEndOfTheWorld += Die; // Подписка на событие TheEndOfTheWorld
+    }
+
+    private void OnDisable()
+    {
+        UIManager.TheEndOfTheWorld -= Die; // Отписка от события TheEndOfTheWorld
+    }
+
     void Move(Vector2 newPosition) // Метод передвижения
     {
         targetPosition = Camera.main.ScreenToWorldPoint(newPosition);
@@ -129,42 +139,67 @@ public class Creature : MonoBehaviour
                 case 0:
                     n = rand.Next(2);
                     if (n == 1)
+                    {
                         newcreature.speed++;
+                        newcreature.GetComponent<SpriteRenderer>().color -= new Color32(0, 0, 5, 0);
+                    }
                     else
+                    {
                         newcreature.speed--;
-                    newcreature.GetComponent<SpriteRenderer>().color -= new Color32(5, 0, 0, 0);
+                        newcreature.GetComponent<SpriteRenderer>().color += new Color32(0, 0, 5, 0);
+                    }
                     break;
                 case 1:
                     n = rand.Next(2);
                     if (n == 1)
+                    {
                         newcreature.startenergy++;
+                        newcreature.GetComponent<SpriteRenderer>().color -= new Color32(0, 5, 0, 0);
+                    }
                     else
+                    {
                         newcreature.startenergy--;
-                    newcreature.GetComponent<SpriteRenderer>().color -= new Color32(0, 5, 0, 0);
+                        newcreature.GetComponent<SpriteRenderer>().color += new Color32(0, 5, 0, 0);
+                    }
                     break;
                 case 2:
                     n = rand.Next(2);
                     if (n == 1)
+                    {
                         newcreature.size++;
+                        newcreature.GetComponent<SpriteRenderer>().color -= new Color32(0, 5, 5, 0);
+                    }
                     else
+                    {
                         newcreature.size--;
-                    newcreature.GetComponent<SpriteRenderer>().color -= new Color32(0, 0, 5, 0);
+                        newcreature.GetComponent<SpriteRenderer>().color += new Color32(0, 5, 5, 0);
+                    }
                     break;
                 case 3:
                     n = rand.Next(2);
                     if (n == 1)
+                    {
                         newcreature.time++;
+                        newcreature.GetComponent<SpriteRenderer>().color -= new Color32(5, 0, 0, 0);
+                    }
                     else
+                    {
                         newcreature.time--;
-                    newcreature.GetComponent<SpriteRenderer>().color -= new Color32(5, 0, 5, 0);
+                        newcreature.GetComponent<SpriteRenderer>().color += new Color32(5, 0, 0, 0);
+                    }
                     break;
                 case 4:
                     n = rand.Next(2);
                     if (n == 1)
+                    {
                         newcreature.chanceOfMutation++;
+                        newcreature.GetComponent<SpriteRenderer>().color -= new Color32(5, 0, 5, 0);
+                    }
                     else
+                    {
                         newcreature.chanceOfMutation--;
-                    newcreature.GetComponent<SpriteRenderer>().color -= new Color32(5, 5, 0, 0);
+                        newcreature.GetComponent<SpriteRenderer>().color += new Color32(5, 0, 5, 0);
+                    }
                     break;
             }
         }
