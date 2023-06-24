@@ -6,21 +6,24 @@ public class Plant : MonoBehaviour
 {
     int energy = 20; // Энергия, которая будет отдана при съедении
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnEnable()
     {
-        
+        UIManager.TheEndOfTheWorld += Destroy; // Подписка на событие TheEndOfTheWorld
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
-        
+        UIManager.TheEndOfTheWorld -= Destroy; // Отписка от события TheEndOfTheWorld
     }
 
     public int Die()
     {
         Destroy(gameObject);
         return energy;
+    }
+
+    private void Destroy()
+    {
+        Destroy(gameObject);
     }
 }
