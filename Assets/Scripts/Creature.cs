@@ -20,7 +20,7 @@ public class Creature : MonoBehaviour
     public GameObject creaturePrefab; // 
     public static Action<string> WasClicked;
 
-    void Start() // Метод, вызываемый при воспроизведении первого кадра
+    private void Start() // Метод, вызываемый при воспроизведении первого кадра
     {
         rb = GetComponent<Rigidbody2D>(); // Получает ссылку на указанный объект класса
         Vector3 sizetoscale = new Vector3(size, size); // Вектор для присвоения размера
@@ -32,12 +32,7 @@ public class Creature : MonoBehaviour
         InvokeRepeating("Decreaseenergy", time, time); //Каждое time кол-во времени вызывается метод
     }
 
-    void Update() // Метод, вызываемый каждый кадр
-    {
-
-    }
-
-    void FixedUpdate() //
+    private void FixedUpdate() //
     {
         if (isMoving)
         {
@@ -63,7 +58,7 @@ public class Creature : MonoBehaviour
     }
 
     // Метод, реагирующий на контакты с другими объектами
-    void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Wall")) // Попытка исправить прилипание к стенам
         {
@@ -95,13 +90,13 @@ public class Creature : MonoBehaviour
         UIManager.TheEndOfTheWorld -= Die; // Отписка от события TheEndOfTheWorld
     }
 
-    void Move(Vector2 newPosition) // Метод передвижения
+    public void Move(Vector2 newPosition) // Метод передвижения
     {
         targetPosition = Camera.main.ScreenToWorldPoint(newPosition);
         isMoving = true;
     }
 
-    void Decreaseenergy() // Метод утраты энергии
+    public void Decreaseenergy() // Метод утраты энергии
     {
         energy--;
         if (energy == 0)
@@ -110,12 +105,12 @@ public class Creature : MonoBehaviour
         }
     }
 
-    void Die() // Метод смерти
+    public void Die() // Метод смерти
     {
         Destroy(gameObject);
     }
 
-    void Eat(Plant plant) // Метод питания
+    public void Eat(Plant plant) // Метод питания
     {
         int receivedenergy = plant.Die();
         energy += receivedenergy;
@@ -125,7 +120,7 @@ public class Creature : MonoBehaviour
             Multiply();
     }
 
-    void Multiply() // Метод размножения
+    public void Multiply() // Метод размножения
     {
         Vector3 spawnPosition = transform.position;
         GameObject newcreature = Instantiate(creaturePrefab, spawnPosition, Quaternion.identity);

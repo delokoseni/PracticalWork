@@ -13,14 +13,16 @@ public class UIManager : MonoBehaviour
     public static UIManager singleton {  get; private set; }
     [SerializeField] private TextMeshProUGUI infoText;
     [SerializeField] private TMP_InputField herbivoresInputField, predatorsInputField, scavengersInputField, plantsInputField;
-    [SerializeField] private Button startButton, pouseButton, stopButton;
+    [SerializeField] private Button startButton, pouseButton, stopButton, closeInfoButton;
     private int numberOfHerbivores = 0, numberOfPredators = 0, numberOfScavengers = 0, numberOfPlants;
     public static Action TheEndOfTheWorld; // Делегат, событие
     public static Action StartOfTheWorld; // Делегат, событие
     [SerializeField] private GameObject panel; // Панель паузы
     [SerializeField] private GameObject infoPanel; // Панель информации
+
     bool isPaused = false; // Находится ли приложение на паузе
-    bool dateIsOK = true; // Верно ли введены исходные данные
+    bool dataIsOK = true; // Верно ли введены исходные данные
+    bool isStarted = false; // Была ли нажата кнопка старт
 
     void Awake()
     {
@@ -42,39 +44,41 @@ public class UIManager : MonoBehaviour
                 if (int.Parse(herbivoresInputField.text) >= 0)
                 {
                     numberOfHerbivores = int.Parse(herbivoresInputField.text);
-                    dateIsOK = true;
+                    dataIsOK = true;
                 }
                 else
-                    dateIsOK = false;
+                    dataIsOK = false;
                 if (int.Parse(predatorsInputField.text) >= 0)
                 {
                     numberOfPredators = int.Parse(predatorsInputField.text);
-                    dateIsOK = true;
+                    dataIsOK = true;
                 }
                 else
-                    dateIsOK = false;
+                    dataIsOK = false;
                 if (int.Parse(scavengersInputField.text) >= 0)
                 {
                     numberOfScavengers = int.Parse(scavengersInputField.text);
-                    dateIsOK = true;
+                    dataIsOK = true;
                 }
                 else
-                    dateIsOK = false;
+                    dataIsOK = false;
                 if (int.Parse(plantsInputField.text) >= 1)
                 {
                     numberOfPlants = int.Parse(plantsInputField.text);
-                    dateIsOK = true;
+                    dataIsOK = true;
                 }
                 else
-                    dateIsOK = false;
+                    dataIsOK = false;
             }
             else
-            {
-                dateIsOK = false;
-            }
+                dataIsOK = false;
         }
         catch{ }
-        StartOfTheWorld?.Invoke(); // Вызов события, если на него есть подписавшиеся методы
+        if (!isStarted)
+        {
+            StartOfTheWorld?.Invoke(); // Вызов события, если на него есть подписавшиеся методы
+            isStarted = true;
+        }
     }
 
     public void Pause() // Метод, приостанавливающий все события
@@ -95,33 +99,34 @@ public class UIManager : MonoBehaviour
 
     public void StopWasClicked() //Метод, вызываемый при нажатии кнопки Stop
     {
+        isStarted = false;
         TheEndOfTheWorld?.Invoke(); // Вызов события, если на него есть подписавшиеся методы
     }
 
     public int GetnumberOfHerbivores()
     {
-        if(dateIsOK)
+        if(dataIsOK)
             return numberOfHerbivores;
         else return -1;
     }
 
     public int GetnumberOfPredators()
     {
-        if (dateIsOK)
+        if (dataIsOK)
             return numberOfPredators;
         else return -1;
     }
 
     public int GetnumberOfScavengers()
     {
-        if (dateIsOK)
+        if (dataIsOK)
             return numberOfScavengers;
         else return -1;
     }
 
     public int GetnumberOfPlants()
     {
-        if (dateIsOK)
+        if (dataIsOK)
             return numberOfPlants;
         else return -1;
     }
@@ -130,5 +135,10 @@ public class UIManager : MonoBehaviour
     {
         infoPanel.SetActive(true);
         infoText.text = str;
+    }
+
+    public void InfoPanelClose()
+    {
+        infoPanel.SetActive(false);
     }
 }
