@@ -6,22 +6,30 @@ using TMPro;
 using Unity.VisualScripting;
 using System;
 using Unity.Mathematics;
+using UnityEngine.Profiling.Memory.Experimental;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager singleton {  get; private set; }
-    [SerializeField] private TMPro.TMP_InputField herbivoresInputField, predatorsInputField, scavengersInputField, plantsInputField;
+    [SerializeField] private TextMeshProUGUI infoText;
+    [SerializeField] private TMP_InputField herbivoresInputField, predatorsInputField, scavengersInputField, plantsInputField;
     [SerializeField] private Button startButton, pouseButton, stopButton;
     private int numberOfHerbivores = 0, numberOfPredators = 0, numberOfScavengers = 0, numberOfPlants;
-    public static Action TheEndOfTheWorld; // Делегат
-    public static Action StartOfTheWorld; // Делегат
+    public static Action TheEndOfTheWorld; // Делегат, событие
+    public static Action StartOfTheWorld; // Делегат, событие
     [SerializeField] private GameObject panel; // Панель паузы
-    bool isPaused = false;
-    bool dateIsOK = true;
+    [SerializeField] private GameObject infoPanel; // Панель информации
+    bool isPaused = false; // Находится ли приложение на паузе
+    bool dateIsOK = true; // Верно ли введены исходные данные
 
     void Awake()
     {
         singleton = this;
+    }
+
+    private void OnEnable()
+    {
+        Creature.WasClicked += InfoPanelShow; // Подписка на событие TheEndOfTheWorld
     }
 
     public void SaveData() // Метод, сохраняющий все введенные данные
@@ -116,5 +124,11 @@ public class UIManager : MonoBehaviour
         if (dateIsOK)
             return numberOfPlants;
         else return -1;
+    }
+
+    private void InfoPanelShow(string str)
+    {
+        infoPanel.SetActive(true);
+        infoText.text = str;
     }
 }

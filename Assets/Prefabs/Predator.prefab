@@ -161,4 +161,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa53111bd1aadc643ab55012b527ed92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  creaturePrefab: {fileID: 0}
+  rb: {fileID: 0}
+  creaturePrefab: {fileID: 1966413735974384274}

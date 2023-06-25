@@ -42,8 +42,8 @@ public class Spawner : MonoBehaviour
 
     private void OnDisable() // ???
     {
-        UIManager.TheEndOfTheWorld -= EndOfSpawning; // Отписка от события TheEndOfTheWorld
-        UIManager.StartOfTheWorld -= SetData; // Отписка от события StartOfTheWorld
+        //UIManager.TheEndOfTheWorld -= EndOfSpawning; // Отписка от события TheEndOfTheWorld
+        //UIManager.StartOfTheWorld -= SetData; // Отписка от события StartOfTheWorld
     }
 
     void EndOfSpawning()

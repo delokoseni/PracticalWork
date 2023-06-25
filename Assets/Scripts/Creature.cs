@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -17,6 +18,7 @@ public class Creature : MonoBehaviour
     int chanceOfMutation = 100; // Шанс, с которым потомок сможет мутировать
     Color32 color; // Цвет существа
     public GameObject creaturePrefab; // 
+    public static Action<string> WasClicked;
 
     void Start() // Метод, вызываемый при воспроизведении первого кадра
     {
@@ -25,7 +27,7 @@ public class Creature : MonoBehaviour
         transform.localScale = sizetoscale; // Присвоение стартового размера объекта класса
         energy = startenergy;
         transform.localScale = new Vector3(size, size, 0);
-        targetPosition = new Vector2(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height));
+        targetPosition = new Vector2(UnityEngine.Random.Range(0f, Screen.width), UnityEngine.Random.Range(0f, Screen.height));
         Move(targetPosition);
         InvokeRepeating("Decreaseenergy", time, time); //Каждое time кол-во времени вызывается метод
     }
@@ -54,7 +56,7 @@ public class Creature : MonoBehaviour
         }
         else
         {
-            Vector2 newtargetPosition = new Vector2(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height));
+            Vector2 newtargetPosition = new Vector2(UnityEngine.Random.Range(0f, Screen.width), UnityEngine.Random.Range(0f, Screen.height));
             targetPosition = newtargetPosition;
             Move(newtargetPosition);
         }
@@ -65,13 +67,15 @@ public class Creature : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Wall")) // Попытка исправить прилипание к стенам
         {
-            Vector2 newtargetPosition = new Vector2(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height));
+            Vector2 newtargetPosition = new Vector2(UnityEngine.Random.Range(0f, Screen.width), 
+                UnityEngine.Random.Range(0f, Screen.height));
             targetPosition = newtargetPosition;
             Move(newtargetPosition);
         }
         if (collision.gameObject.CompareTag("Creature")) // Попытка исправить слипание между собой
         {
-            Vector2 newtargetPosition = new Vector2(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height));
+            Vector2 newtargetPosition = new Vector2(UnityEngine.Random.Range(0f, Screen.width), 
+                UnityEngine.Random.Range(0f, Screen.height));
             targetPosition = newtargetPosition;
             Move(newtargetPosition);
         }
@@ -128,7 +132,7 @@ public class Creature : MonoBehaviour
         Mutate(newcreature.GetComponent<Creature>());
     }
 
-    void Mutate(Creature newcreature) // Метод мутирования
+    public void Mutate(Creature newcreature) // Метод мутирования
     {
         System.Random rand = new System.Random();
         if(rand.Next(1,101) <= chanceOfMutation)
@@ -203,5 +207,13 @@ public class Creature : MonoBehaviour
                     break;
             }
         }
+    }
+
+    public void OnMouseDown()
+    {
+        string str = "Скорость: " + speed + "\nРазмер: " + size + "\nСтартовая энергия" + startenergy +
+            "\nВремя, за которое расходуется 1 ед. энергии: " + time + "\nШанс мутации потомка: " +
+            chanceOfMutation + "%";
+        WasClicked?.Invoke(str);
     }
 }
