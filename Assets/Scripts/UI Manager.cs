@@ -10,15 +10,19 @@ using UnityEngine.Profiling.Memory.Experimental;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager singleton {  get; private set; }
+    public static UIManager singleton {  get; private set; } // Паттерн синглтон (объект данного класса может быть лишь 1)
     [SerializeField] private TextMeshProUGUI infoText;
     [SerializeField] private TMP_InputField herbivoresInputField, predatorsInputField, scavengersInputField, plantsInputField;
-    [SerializeField] private Button startButton, pouseButton, stopButton, closeInfoButton;
-    private int numberOfHerbivores = 0, numberOfPredators = 0, numberOfScavengers = 0, numberOfPlants;
-    public static Action TheEndOfTheWorld; // Делегат, событие
-    public static Action StartOfTheWorld; // Делегат, событие
+    [SerializeField] private TMP_InputField speedInputField, startenergyInputField, sizeInputField, timeInputField;
+    [SerializeField] private TMP_InputField chanseofmutationInputField;
+    [SerializeField] private Button startButton, pouseButton, stopButton, closeInfoButton, closeButton;
     [SerializeField] private GameObject panel; // Панель паузы
     [SerializeField] private GameObject infoPanel; // Панель информации
+    private int numberOfHerbivores = 0, numberOfPredators = 0, numberOfScavengers = 0, numberOfPlants;
+    private int startenergy = 100, chanseofmutation = 100;
+    private float speed = 5f, size = 1f, time = 1f;
+    public static Action TheEndOfTheWorld; // Делегат, событие
+    public static Action StartOfTheWorld; // Делегат, событие
 
     bool isPaused = false; // Находится ли приложение на паузе
     bool dataIsOK = true; // Верно ли введены исходные данные
@@ -65,6 +69,41 @@ public class UIManager : MonoBehaviour
                 if (int.Parse(plantsInputField.text) >= 1)
                 {
                     numberOfPlants = int.Parse(plantsInputField.text);
+                    dataIsOK = true;
+                }
+                else
+                    dataIsOK = false;
+                if (int.Parse(startenergyInputField.text) >= 1)
+                {
+                    startenergy = int.Parse(startenergyInputField.text);
+                    dataIsOK = true;
+                }
+                else
+                    dataIsOK = false;
+                if (int.Parse(chanseofmutationInputField.text) >= 1)
+                {
+                    chanseofmutation = int.Parse(chanseofmutationInputField.text);
+                    dataIsOK = true;
+                }
+                else
+                    dataIsOK = false;
+                if (float.Parse(speedInputField.text) >= 1)
+                {
+                    speed = float.Parse(speedInputField.text);
+                    dataIsOK = true;
+                }
+                else
+                    dataIsOK = false;
+                if (float.Parse(sizeInputField.text) >= 1)
+                {
+                    size = float.Parse(sizeInputField.text);
+                    dataIsOK = true;
+                }
+                else
+                    dataIsOK = false;
+                if (float.Parse(timeInputField.text) >= 0.1)
+                {
+                    time = float.Parse(timeInputField.text);
                     dataIsOK = true;
                 }
                 else
@@ -131,6 +170,41 @@ public class UIManager : MonoBehaviour
         else return -1;
     }
 
+    public float GetSpeed()
+    {
+        if (dataIsOK)
+            return speed;
+        else return -1f;
+    }
+
+    public float GetTime()
+    {
+        if (dataIsOK)
+            return time;
+        else return -1f;
+    }
+
+    public float GetSize()
+    {
+        if (dataIsOK)
+            return size;
+        else return -1f;
+    }
+
+    public int GetStartEnergy()
+    {
+        if (dataIsOK)
+            return startenergy;
+        else return -1;
+    }
+
+    public int GetChanseOfMutation()
+    {
+        if (dataIsOK)
+            return chanseofmutation;
+        else return -1;
+    }
+
     private void InfoPanelShow(string str)
     {
         infoPanel.SetActive(true);
@@ -140,5 +214,10 @@ public class UIManager : MonoBehaviour
     public void InfoPanelClose()
     {
         infoPanel.SetActive(false);
+    }
+
+    public void Close()
+    {
+        Application.Quit();
     }
 }

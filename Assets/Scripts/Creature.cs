@@ -8,31 +8,33 @@ using UnityEngine;
 public class Creature : MonoBehaviour
 {
     public Rigidbody2D rb; // Класс, описывающий физику объекта 
-    Vector2 targetPosition; // Позиция, в которую движется объект класса
-    bool isMoving = false; // Нобходимо для проверки, находится ли объект класса в движении
-    float speed = 5f; // Скорость 
-    int startenergy = 100; // Стартовая энергия 
-    int energy; // Текущая энергия 
-    float size = 1; // Размер 
-    float time = 1f; // Время, за которое расходуется 1 единица энергии
-    int chanceOfMutation = 100; // Шанс, с которым потомок сможет мутировать
-    Color32 color; // Цвет существа
-    public GameObject creaturePrefab; // 
+    protected Vector2 targetPosition; // Позиция, в которую движется объект класса
+    protected bool isMoving = false; // Нобходимо для проверки, находится ли объект класса в движении
+    protected float speed = 5f; // Скорость 
+    protected int startenergy = 100; // Стартовая энергия 
+    protected int energy; // Текущая энергия 
+    protected float size = 1f; // Размер 
+    protected float time = 1f; // Время, за которое расходуется 1 единица энергии
+    protected int chanceOfMutation = 100; // Шанс, с которым потомок сможет мутировать
+    protected Color32 color; // Цвет существа
+    public GameObject creaturePrefab; //  
     public static Action<string> WasClicked;
+    private static bool DataIsSeted = false;
 
-    private void Start() // Метод, вызываемый при воспроизведении первого кадра
+    void Start() // Метод, вызываемый при воспроизведении первого кадра
     {
         rb = GetComponent<Rigidbody2D>(); // Получает ссылку на указанный объект класса
+        //SetData();
         Vector3 sizetoscale = new Vector3(size, size); // Вектор для присвоения размера
         transform.localScale = sizetoscale; // Присвоение стартового размера объекта класса
         energy = startenergy;
         transform.localScale = new Vector3(size, size, 0);
         targetPosition = new Vector2(UnityEngine.Random.Range(0f, Screen.width), UnityEngine.Random.Range(0f, Screen.height));
         Move(targetPosition);
-        InvokeRepeating("Decreaseenergy", time, time); //Каждое time кол-во времени вызывается метод
+        InvokeRepeating("Decreaseenergy", time, time); // Каждое time кол-во времени вызывается метод
     }
 
-    private void FixedUpdate() //
+    void FixedUpdate() //
     {
         if (isMoving)
         {
@@ -58,7 +60,7 @@ public class Creature : MonoBehaviour
     }
 
     // Метод, реагирующий на контакты с другими объектами
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Wall")) // Попытка исправить прилипание к стенам
         {
@@ -139,12 +141,12 @@ public class Creature : MonoBehaviour
                     n = rand.Next(2);
                     if (n == 1)
                     {
-                        newcreature.speed++;
+                        newcreature.speed = speed + 1f;
                         newcreature.GetComponent<SpriteRenderer>().color -= new Color32(0, 0, 5, 0);
                     }
                     else
                     {
-                        newcreature.speed--;
+                        newcreature.speed = speed - 1f;
                         newcreature.GetComponent<SpriteRenderer>().color += new Color32(0, 0, 5, 0);
                     }
                     break;
@@ -152,12 +154,12 @@ public class Creature : MonoBehaviour
                     n = rand.Next(2);
                     if (n == 1)
                     {
-                        newcreature.startenergy++;
+                        newcreature.startenergy = startenergy + 1;
                         newcreature.GetComponent<SpriteRenderer>().color -= new Color32(0, 5, 0, 0);
                     }
                     else
                     {
-                        newcreature.startenergy--;
+                        newcreature.startenergy = startenergy - 1;
                         newcreature.GetComponent<SpriteRenderer>().color += new Color32(0, 5, 0, 0);
                     }
                     break;
@@ -165,12 +167,12 @@ public class Creature : MonoBehaviour
                     n = rand.Next(2);
                     if (n == 1)
                     {
-                        newcreature.size++;
+                        newcreature.size = size + 0.1f;
                         newcreature.GetComponent<SpriteRenderer>().color -= new Color32(0, 5, 5, 0);
                     }
                     else
                     {
-                        newcreature.size--;
+                        newcreature.size = size - 0.1f;
                         newcreature.GetComponent<SpriteRenderer>().color += new Color32(0, 5, 5, 0);
                     }
                     break;
@@ -178,12 +180,12 @@ public class Creature : MonoBehaviour
                     n = rand.Next(2);
                     if (n == 1)
                     {
-                        newcreature.time++;
+                        newcreature.time = time + 0.1f;
                         newcreature.GetComponent<SpriteRenderer>().color -= new Color32(5, 0, 0, 0);
                     }
                     else
                     {
-                        newcreature.time--;
+                        newcreature.time = time - 0.1f;
                         newcreature.GetComponent<SpriteRenderer>().color += new Color32(5, 0, 0, 0);
                     }
                     break;
@@ -191,12 +193,14 @@ public class Creature : MonoBehaviour
                     n = rand.Next(2);
                     if (n == 1)
                     {
-                        newcreature.chanceOfMutation++;
-                        newcreature.GetComponent<SpriteRenderer>().color -= new Color32(5, 0, 5, 0);
+                        if (chanceOfMutation < 100) {
+                            newcreature.chanceOfMutation = chanceOfMutation + 1;
+                            newcreature.GetComponent<SpriteRenderer>().color -= new Color32(5, 0, 5, 0);
+                        }
                     }
                     else
                     {
-                        newcreature.chanceOfMutation--;
+                        newcreature.chanceOfMutation = chanceOfMutation - 1;
                         newcreature.GetComponent<SpriteRenderer>().color += new Color32(5, 0, 5, 0);
                     }
                     break;
@@ -204,9 +208,19 @@ public class Creature : MonoBehaviour
         }
     }
 
+    public void SetData()
+    {
+        speed = UIManager.singleton.GetSpeed();
+        size = UIManager.singleton.GetSize();
+        time = UIManager.singleton.GetTime();
+        startenergy = UIManager.singleton.GetStartEnergy();
+        chanceOfMutation = UIManager.singleton.GetChanseOfMutation();
+        DataIsSeted = true;
+    }
+
     public void OnMouseDown()
     {
-        string str = "Скорость: " + speed + "\nРазмер: " + size + "\nСтартовая энергия" + startenergy +
+        string str = "Скорость: " + speed + "\nРазмер: " + size + "\nСтартовая энергия: " + startenergy +
             "\nВремя, за которое расходуется 1 ед. энергии: " + time + "\nШанс мутации потомка: " +
             chanceOfMutation + "%";
         WasClicked?.Invoke(str);
