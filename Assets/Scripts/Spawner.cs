@@ -23,6 +23,7 @@ public class Spawner : MonoBehaviour
     {
         singleton = this;
     }
+
     void Spawn(GameObject Prefab, int number)
     {
         for (int i = 0; i < number; i++)
@@ -67,6 +68,8 @@ public class Spawner : MonoBehaviour
     void EndOfSpawning()
     {
         CancelInvoke("SpawnPlant");
+        Spawner.singleton.carrionList.Clear();
+        Spawner.singleton.plantList.Clear();
     }
 
     void SetData()

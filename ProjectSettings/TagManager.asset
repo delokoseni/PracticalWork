@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Wall
   - Creature
+  - Plant
+  - Carrion
   layers:
   - Default
   - TransparentFX

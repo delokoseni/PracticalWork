@@ -38,10 +38,10 @@ public class Creature : MonoBehaviour
         SetData();
     }
 
-    void FixedUpdate() //
+    void FixedUpdate() // 
     {
         if (isMoving)
-        {
+        { // Тут движение
             Vector2 currentPosition = rb.position;
             Vector2 direction = (targetPosition - currentPosition).normalized;
             float distance = Vector2.Distance(currentPosition, targetPosition);
@@ -81,13 +81,17 @@ public class Creature : MonoBehaviour
             targetPosition = newtargetPosition;
             Move(newtargetPosition);
         }
-        if (collision.gameObject.CompareTag("Plant")) 
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.CompareTag("Plant"))
         {
             Eat(collision.gameObject.GetComponent<Plant>());
         }
     }
 
-    private void OnEnable()
+        private void OnEnable()
     {
         UIManager.TheEndOfTheWorld += Die; // Подписка на событие TheEndOfTheWorld
     }
@@ -116,7 +120,8 @@ public class Creature : MonoBehaviour
     {
         Vector3 position = transform.position;
         Destroy(gameObject);
-        Spawner.singleton.SpawnCarrion(position);
+        if (!UIManager.singleton.wasTheEndOfTheWorld)
+            Spawner.singleton.SpawnCarrion(position);
     }
 
     public void Eat(Plant plant) // Метод питания

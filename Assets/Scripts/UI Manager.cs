@@ -26,6 +26,7 @@ public class UIManager : MonoBehaviour
     bool isPaused = false; // Находится ли приложение на паузе
     bool dataIsOK = true; // Верно ли введены исходные данные
     bool isStarted = false; // Была ли нажата кнопка старт
+    public bool wasTheEndOfTheWorld = false; // Была ли нажата кнопка стоп
     private float width;
     private float height;
 
@@ -120,6 +121,7 @@ public class UIManager : MonoBehaviour
         {
             StartOfTheWorld?.Invoke(); // Вызов события, если на него есть подписавшиеся методы
             isStarted = true;
+            wasTheEndOfTheWorld = false;
         }
     }
 
@@ -142,6 +144,7 @@ public class UIManager : MonoBehaviour
     public void StopWasClicked() //Метод, вызываемый при нажатии кнопки Stop
     {
         isStarted = false;
+        wasTheEndOfTheWorld = true;
         TheEndOfTheWorld?.Invoke(); // Вызов события, если на него есть подписавшиеся методы
         InfoPanelClose();
     }
