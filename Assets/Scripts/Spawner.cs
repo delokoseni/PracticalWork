@@ -4,21 +4,31 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
+    public static Spawner singleton { get; private set; } // Паттерн синглтон (объект данного класса может быть лишь 1)
     public GameObject creaturePrefab; //
     public GameObject plantPrefab; //
     public GameObject predatorPrefab; //
     public GameObject scavengerPrefab; //
+    public GameObject carrionPrefab; // 
     int numberOfCreatures; // Количество травоядных
     int numberOfPredators; // Количество хищников
     int numberOfScavengers; // Количество падальщиков
     int numberOfPlants; // Количество растений
     float time = 20f; // Время, через которое растения снова появятся
+    public List<Vector3> carrionList; // 
+    public List<Vector2> creatureList; //???
+    public List<Vector2> plantList; //
 
+    private void Awake()
+    {
+        singleton = this;
+    }
     void Spawn(GameObject Prefab, int number)
     {
         for (int i = 0; i < number; i++)
         {
-            Vector3 randomPosition = new Vector3(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height), 1f);
+            Vector3 randomPosition = new Vector3(Random.Range(0f, UIManager.singleton.GetWidth()), 
+                Random.Range(0f, UIManager.singleton.GetHeight()), 1f);
             Vector3 spawnPosition = Camera.main.ScreenToWorldPoint(randomPosition);
             GameObject newGameObject = Instantiate(Prefab, spawnPosition, Quaternion.identity);
         }
@@ -28,10 +38,18 @@ public class Spawner : MonoBehaviour
     {
         for (int i = 0; i < numberOfPlants; i++)
         {
-            Vector3 randomPosition = new Vector3(Random.Range(0f, Screen.width), Random.Range(0f, Screen.height), 1f);
+            Vector3 randomPosition = new Vector3(Random.Range(0f, UIManager.singleton.GetWidth()),
+                Random.Range(0f, UIManager.singleton.GetHeight()), 1f);
             Vector3 spawnPosition = Camera.main.ScreenToWorldPoint(randomPosition);
-            GameObject newcreature = Instantiate(plantPrefab, spawnPosition, Quaternion.identity);
+            GameObject newPlant = Instantiate(plantPrefab, spawnPosition, Quaternion.identity);
+            plantList.Add(newPlant.transform.position);
         }
+    }
+
+    public void SpawnCarrion(Vector3 spawnPosition)
+    {
+        GameObject newCarrion = Instantiate(carrionPrefab, spawnPosition, Quaternion.identity);
+        carrionList.Add(newCarrion.transform.position);
     }
 
     private void OnEnable()

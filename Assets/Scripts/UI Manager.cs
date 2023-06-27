@@ -15,22 +15,25 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TMP_InputField herbivoresInputField, predatorsInputField, scavengersInputField, plantsInputField;
     [SerializeField] private TMP_InputField speedInputField, startenergyInputField, sizeInputField, timeInputField;
     [SerializeField] private TMP_InputField chanseofmutationInputField;
-    [SerializeField] private Button startButton, pouseButton, stopButton, closeInfoButton, closeButton;
-    [SerializeField] private GameObject panel; // Панель паузы
+    [SerializeField] private Button startButton, pouseButton, stopButton;
+    [SerializeField] private GameObject panel, secondpanel; // Панель паузы
     [SerializeField] private GameObject infoPanel; // Панель информации
     private int numberOfHerbivores = 0, numberOfPredators = 0, numberOfScavengers = 0, numberOfPlants;
     private int startenergy = 100, chanseofmutation = 100;
     private float speed = 5f, size = 1f, time = 1f;
     public static Action TheEndOfTheWorld; // Делегат, событие
     public static Action StartOfTheWorld; // Делегат, событие
-
     bool isPaused = false; // Находится ли приложение на паузе
     bool dataIsOK = true; // Верно ли введены исходные данные
     bool isStarted = false; // Была ли нажата кнопка старт
+    private float width;
+    private float height;
 
     void Awake()
     {
         singleton = this;
+        width = 2*secondpanel.transform.localPosition.x;// / canvas.scaleFactor;
+        height = Screen.height;// / canvas.scaleFactor;
     }
 
     private void OnEnable()
@@ -140,6 +143,7 @@ public class UIManager : MonoBehaviour
     {
         isStarted = false;
         TheEndOfTheWorld?.Invoke(); // Вызов события, если на него есть подписавшиеся методы
+        InfoPanelClose();
     }
 
     public int GetnumberOfHerbivores()
@@ -219,5 +223,15 @@ public class UIManager : MonoBehaviour
     public void Close()
     {
         Application.Quit();
+    }
+
+    public float GetWidth()
+    {
+        return width;
+    }
+
+    public float GetHeight()
+    {
+        return height;
     }
 }

@@ -10,28 +10,32 @@ public class Creature : MonoBehaviour
     public Rigidbody2D rb; // Класс, описывающий физику объекта 
     protected Vector2 targetPosition; // Позиция, в которую движется объект класса
     protected bool isMoving = false; // Нобходимо для проверки, находится ли объект класса в движении
-    protected float speed = 5f; // Скорость 
-    protected int startenergy = 100; // Стартовая энергия 
+    protected float speed; // Скорость 
+    protected int startenergy; // Стартовая энергия 
     protected int energy; // Текущая энергия 
-    protected float size = 1f; // Размер 
-    protected float time = 1f; // Время, за которое расходуется 1 единица энергии
-    protected int chanceOfMutation = 100; // Шанс, с которым потомок сможет мутировать
+    protected float size; // Размер 
+    protected float time; // Время, за которое расходуется 1 единица энергии
+    protected int chanceOfMutation; // Шанс, с которым потомок сможет мутировать
     protected Color32 color; // Цвет существа
     public GameObject creaturePrefab; //  
     public static Action<string> WasClicked;
-    private static bool DataIsSeted = false;
 
     void Start() // Метод, вызываемый при воспроизведении первого кадра
     {
         rb = GetComponent<Rigidbody2D>(); // Получает ссылку на указанный объект класса
-        //SetData();
         Vector3 sizetoscale = new Vector3(size, size); // Вектор для присвоения размера
         transform.localScale = sizetoscale; // Присвоение стартового размера объекта класса
         energy = startenergy;
         transform.localScale = new Vector3(size, size, 0);
-        targetPosition = new Vector2(UnityEngine.Random.Range(0f, Screen.width), UnityEngine.Random.Range(0f, Screen.height));
+        targetPosition = new Vector2(UnityEngine.Random.Range(0f, UIManager.singleton.GetWidth()),
+            UnityEngine.Random.Range(0f, UIManager.singleton.GetHeight()));
         Move(targetPosition);
         InvokeRepeating("Decreaseenergy", time, time); // Каждое time кол-во времени вызывается метод
+    }
+
+    private void Awake() // Вызывается лишь 1 раз для установки данных
+    {
+        SetData();
     }
 
     void FixedUpdate() //
@@ -53,7 +57,8 @@ public class Creature : MonoBehaviour
         }
         else
         {
-            Vector2 newtargetPosition = new Vector2(UnityEngine.Random.Range(0f, Screen.width), UnityEngine.Random.Range(0f, Screen.height));
+            Vector2 newtargetPosition = new Vector2(UnityEngine.Random.Range(0f, UIManager.singleton.GetWidth()),
+                UnityEngine.Random.Range(0f, UIManager.singleton.GetHeight()));
             targetPosition = newtargetPosition;
             Move(newtargetPosition);
         }
@@ -64,15 +69,15 @@ public class Creature : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Wall")) // Попытка исправить прилипание к стенам
         {
-            Vector2 newtargetPosition = new Vector2(UnityEngine.Random.Range(0f, Screen.width), 
-                UnityEngine.Random.Range(0f, Screen.height));
+            Vector2 newtargetPosition = new Vector2(UnityEngine.Random.Range(0f, UIManager.singleton.GetWidth()), 
+                UnityEngine.Random.Range(0f, UIManager.singleton.GetHeight()));
             targetPosition = newtargetPosition;
             Move(newtargetPosition);
         }
         if (collision.gameObject.CompareTag("Creature")) // Попытка исправить слипание между собой
         {
-            Vector2 newtargetPosition = new Vector2(UnityEngine.Random.Range(0f, Screen.width), 
-                UnityEngine.Random.Range(0f, Screen.height));
+            Vector2 newtargetPosition = new Vector2(UnityEngine.Random.Range(0f, UIManager.singleton.GetWidth()),
+                UnityEngine.Random.Range(0f, UIManager.singleton.GetHeight()));
             targetPosition = newtargetPosition;
             Move(newtargetPosition);
         }
@@ -109,7 +114,9 @@ public class Creature : MonoBehaviour
 
     public void Die() // Метод смерти
     {
+        Vector3 position = transform.position;
         Destroy(gameObject);
+        Spawner.singleton.SpawnCarrion(position);
     }
 
     public void Eat(Plant plant) // Метод питания
@@ -208,21 +215,20 @@ public class Creature : MonoBehaviour
         }
     }
 
-    public void SetData()
+    public void SetData() // Устанавливает исходные данные
     {
         speed = UIManager.singleton.GetSpeed();
         size = UIManager.singleton.GetSize();
         time = UIManager.singleton.GetTime();
         startenergy = UIManager.singleton.GetStartEnergy();
         chanceOfMutation = UIManager.singleton.GetChanseOfMutation();
-        DataIsSeted = true;
     }
 
     public void OnMouseDown()
     {
         string str = "Скорость: " + speed + "\nРазмер: " + size + "\nСтартовая энергия: " + startenergy +
             "\nВремя, за которое расходуется 1 ед. энергии: " + time + "\nШанс мутации потомка: " +
-            chanceOfMutation + "%";
+            chanceOfMutation + "%\nЦвет: " + GetComponent<SpriteRenderer>().color.ToString();
         WasClicked?.Invoke(str);
     }
 }
