@@ -23,14 +23,14 @@ public class Creature : MonoBehaviour
     void Start() // Метод, вызываемый при воспроизведении первого кадра
     {
         rb = GetComponent<Rigidbody2D>(); // Получает ссылку на указанный объект класса
-        Vector3 sizetoscale = new Vector3(size, size); // Вектор для присвоения размера
+        Vector2 sizetoscale = new (size, size); // Вектор для присвоения размера
         transform.localScale = sizetoscale; // Присвоение стартового размера объекта класса
-        energy = startenergy;
-        transform.localScale = new Vector3(size, size, 0);
-        targetPosition = new Vector2(UnityEngine.Random.Range(0f, UIManager.singleton.GetWidth()),
-            UnityEngine.Random.Range(0f, UIManager.singleton.GetHeight()));
+        energy = startenergy; // Присвоение текущей энергии
+        transform.localScale = new Vector3(size, size, 0); // Присвоение размеров;
+        targetPosition = new Vector2(UnityEngine.Random.Range(0f, UIManager.Singleton.GetWidth()),
+            UnityEngine.Random.Range(0f, UIManager.Singleton.GetHeight()));
         Move(targetPosition);
-        InvokeRepeating("Decreaseenergy", time, time); // Каждое time кол-во времени вызывается метод
+        InvokeRepeating(nameof(Decreaseenergy), time, time); // Каждое time кол-во времени вызывается метод
     }
 
     private void Awake() // Вызывается лишь 1 раз для установки данных
@@ -40,15 +40,15 @@ public class Creature : MonoBehaviour
 
     void FixedUpdate() // 
     {
+        Vector2 currentPosition = rb.position; // Текущая позиция
         if (isMoving)
         { // Тут движение
-            Vector2 currentPosition = rb.position;
-            Vector2 direction = (targetPosition - currentPosition).normalized;
-            float distance = Vector2.Distance(currentPosition, targetPosition);
+            Vector2 direction = (targetPosition - currentPosition).normalized; // Возвращает вектор единичной длины (направление)
+            float distance = Vector2.Distance(currentPosition, targetPosition); // Возвращает расстояние между точками
 
             if (distance > 0.1f)
             {
-                rb.MovePosition(currentPosition + direction * speed * Time.fixedDeltaTime);
+                rb.MovePosition(currentPosition + speed * Time.fixedDeltaTime * direction); // Передвигает точку
             }
             else
             {
@@ -57,31 +57,53 @@ public class Creature : MonoBehaviour
         }
         else
         {
-            Vector2 newtargetPosition = new Vector2(UnityEngine.Random.Range(0f, UIManager.singleton.GetWidth()),
-                UnityEngine.Random.Range(0f, UIManager.singleton.GetHeight()));
-            targetPosition = newtargetPosition;
-            Move(newtargetPosition);
+            //Vector2 newtargetPosition = new Vector2(UnityEngine.Random.Range(0f, UIManager.singleton.GetWidth()),
+            //UnityEngine.Random.Range(0f, UIManager.singleton.GetHeight()));
+            Debug.Log(Spawner.Singleton.plantList.Count);
+            if (Spawner.Singleton.plantList.Count != 0)
+            {
+                float shortestDistance;
+                shortestDistance = Vector2.Distance(currentPosition, Spawner.Singleton.plantList[0]);
+                Vector2 newtargetPosition = Spawner.Singleton.plantList[0];
+                foreach (var i in Spawner.Singleton.plantList)
+                {
+                    if (Vector2.Distance(currentPosition, i) < shortestDistance)
+                    {
+                        shortestDistance = Vector2.Distance(currentPosition, i);
+                        newtargetPosition = i;
+                    }
+                }
+                targetPosition = newtargetPosition;
+                Move(newtargetPosition);
+            }
+            else
+            {
+                Vector2 newtargetPosition = new (UnityEngine.Random.Range(0f, UIManager.Singleton.GetWidth()),
+                    UnityEngine.Random.Range(0f, UIManager.Singleton.GetHeight()));
+                targetPosition = newtargetPosition;
+                Move(newtargetPosition);
+            }
         }
     }
 
     // Метод, реагирующий на контакты с другими объектами
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Wall")) // Попытка исправить прилипание к стенам
+   // void OnCollisionEnter2D(Collision2D collision)
+    //{
+        /*if (collision.gameObject.CompareTag("Wall")) // Попытка исправить прилипание к стенам
         {
             Vector2 newtargetPosition = new Vector2(UnityEngine.Random.Range(0f, UIManager.singleton.GetWidth()), 
                 UnityEngine.Random.Range(0f, UIManager.singleton.GetHeight()));
             targetPosition = newtargetPosition;
             Move(newtargetPosition);
-        }
-        if (collision.gameObject.CompareTag("Creature")) // Попытка исправить слипание между собой
+        }*/
+        /*if (collision.gameObject.CompareTag("Creature")) // Попытка исправить слипание между собой
         {
             Vector2 newtargetPosition = new Vector2(UnityEngine.Random.Range(0f, UIManager.singleton.GetWidth()),
                 UnityEngine.Random.Range(0f, UIManager.singleton.GetHeight()));
             targetPosition = newtargetPosition;
             Move(newtargetPosition);
-        }
-    }
+        }*/
+    //}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -120,8 +142,8 @@ public class Creature : MonoBehaviour
     {
         Vector3 position = transform.position;
         Destroy(gameObject);
-        if (!UIManager.singleton.wasTheEndOfTheWorld)
-            Spawner.singleton.SpawnCarrion(position);
+        if (!UIManager.Singleton.wasTheEndOfTheWorld)
+            Spawner.Singleton.SpawnCarrion(position);
     }
 
     public void Eat(Plant plant) // Метод питания
@@ -143,7 +165,7 @@ public class Creature : MonoBehaviour
 
     public void Mutate(Creature newcreature) // Метод мутирования
     {
-        System.Random rand = new System.Random();
+        System.Random rand = new ();
         if(rand.Next(1,101) <= chanceOfMutation)
         {
             int n = rand.Next(5);
@@ -222,11 +244,11 @@ public class Creature : MonoBehaviour
 
     public void SetData() // Устанавливает исходные данные
     {
-        speed = UIManager.singleton.GetSpeed();
-        size = UIManager.singleton.GetSize();
-        time = UIManager.singleton.GetTime();
-        startenergy = UIManager.singleton.GetStartEnergy();
-        chanceOfMutation = UIManager.singleton.GetChanseOfMutation();
+        speed = UIManager.Singleton.GetSpeed();
+        size = UIManager.Singleton.GetSize();
+        time = UIManager.Singleton.GetTime();
+        startenergy = UIManager.Singleton.GetStartEnergy();
+        chanceOfMutation = UIManager.Singleton.GetChanseOfMutation();
     }
 
     public void OnMouseDown()

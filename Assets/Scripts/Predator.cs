@@ -26,7 +26,33 @@ public class Predator : Creature
         }
     }
 
-        public void Eat(Creature creature) // Метод питания
+    void FixedUpdate() // 
+    {
+        if (isMoving)
+        { // Тут движение
+            Vector2 currentPosition = rb.position;
+            Vector2 direction = (targetPosition - currentPosition).normalized;
+            float distance = Vector2.Distance(currentPosition, targetPosition);
+
+            if (distance > 0.1f)
+            {
+                rb.MovePosition(currentPosition + speed * Time.fixedDeltaTime * direction);
+            }
+            else
+            {
+                isMoving = false;
+            }
+        }
+        else
+        {
+            Vector2 newtargetPosition = new (UnityEngine.Random.Range(0f, UIManager.Singleton.GetWidth()),
+                UnityEngine.Random.Range(0f, UIManager.Singleton.GetHeight()));
+            targetPosition = newtargetPosition;
+            Move(newtargetPosition);
+        }
+    }
+
+    public void Eat(Creature creature) // Метод питания
     {
         int receivedenergy = 20;
         creature.Die();
@@ -35,5 +61,11 @@ public class Predator : Creature
             energy = startenergy;
         if (energy == 100)
             Multiply();
+    }
+
+    public new void Move(Vector2 newPosition) // Метод передвижения
+    {
+        targetPosition = Camera.main.ScreenToWorldPoint(newPosition);
+        isMoving = true;
     }
 }

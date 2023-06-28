@@ -10,7 +10,7 @@ using UnityEngine.Profiling.Memory.Experimental;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager singleton {  get; private set; } // Паттерн синглтон (объект данного класса может быть лишь 1)
+    public static UIManager Singleton {  get; private set; } // Паттерн синглтон (объект данного класса может быть лишь 1)
     [SerializeField] private TextMeshProUGUI infoText;
     [SerializeField] private TMP_InputField herbivoresInputField, predatorsInputField, scavengersInputField, plantsInputField;
     [SerializeField] private TMP_InputField speedInputField, startenergyInputField, sizeInputField, timeInputField;
@@ -32,7 +32,7 @@ public class UIManager : MonoBehaviour
 
     void Awake()
     {
-        singleton = this;
+        Singleton = this;
         width = 2*secondpanel.transform.localPosition.x;// / canvas.scaleFactor;
         height = Screen.height;// / canvas.scaleFactor;
     }

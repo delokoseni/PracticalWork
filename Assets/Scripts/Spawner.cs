@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public static Spawner singleton { get; private set; } // Паттерн синглтон (объект данного класса может быть лишь 1)
+    public static Spawner Singleton { get; private set; } // Паттерн синглтон (объект данного класса может быть лишь 1)
     public GameObject creaturePrefab; //
     public GameObject plantPrefab; //
     public GameObject predatorPrefab; //
@@ -15,23 +15,23 @@ public class Spawner : MonoBehaviour
     int numberOfScavengers; // Количество падальщиков
     int numberOfPlants; // Количество растений
     float time = 20f; // Время, через которое растения снова появятся
-    public List<Vector3> carrionList; // 
+    public List<Vector2> carrionList; // 
     public List<Vector2> creatureList; //???
     public List<Vector2> plantList; //
 
     private void Awake()
     {
-        singleton = this;
+        Singleton = this;
     }
 
     void Spawn(GameObject Prefab, int number)
     {
         for (int i = 0; i < number; i++)
         {
-            Vector3 randomPosition = new Vector3(Random.Range(0f, UIManager.singleton.GetWidth()), 
-                Random.Range(0f, UIManager.singleton.GetHeight()), 1f);
-            Vector3 spawnPosition = Camera.main.ScreenToWorldPoint(randomPosition);
-            GameObject newGameObject = Instantiate(Prefab, spawnPosition, Quaternion.identity);
+            Vector2 randomPosition = new Vector3(Random.Range(0f, UIManager.Singleton.GetWidth()), 
+                Random.Range(0f, UIManager.Singleton.GetHeight()));
+            Vector2 spawnPosition = Camera.main.ScreenToWorldPoint(randomPosition);
+            Instantiate(Prefab, spawnPosition, Quaternion.identity);
         }
     }
 
@@ -39,9 +39,9 @@ public class Spawner : MonoBehaviour
     {
         for (int i = 0; i < numberOfPlants; i++)
         {
-            Vector3 randomPosition = new Vector3(Random.Range(0f, UIManager.singleton.GetWidth()),
-                Random.Range(0f, UIManager.singleton.GetHeight()), 1f);
-            Vector3 spawnPosition = Camera.main.ScreenToWorldPoint(randomPosition);
+            Vector2 randomPosition = new Vector3(Random.Range(0f, UIManager.Singleton.GetWidth()),
+                Random.Range(0f, UIManager.Singleton.GetHeight()));
+            Vector2 spawnPosition = Camera.main.ScreenToWorldPoint(randomPosition);
             GameObject newPlant = Instantiate(plantPrefab, spawnPosition, Quaternion.identity);
             plantList.Add(newPlant.transform.position);
         }
@@ -67,20 +67,20 @@ public class Spawner : MonoBehaviour
 
     void EndOfSpawning()
     {
-        CancelInvoke("SpawnPlant");
-        Spawner.singleton.carrionList.Clear();
-        Spawner.singleton.plantList.Clear();
+        CancelInvoke(nameof(SpawnPlant));
+        Spawner.Singleton.carrionList.Clear();
+        Spawner.Singleton.plantList.Clear();
     }
 
     void SetData()
     {
-        numberOfCreatures = UIManager.singleton.GetnumberOfHerbivores();
-        numberOfPredators = UIManager.singleton.GetnumberOfPredators();
-        numberOfScavengers = UIManager.singleton.GetnumberOfScavengers();
-        numberOfPlants = UIManager.singleton.GetnumberOfPlants();
+        numberOfCreatures = UIManager.Singleton.GetnumberOfHerbivores();
+        numberOfPredators = UIManager.Singleton.GetnumberOfPredators();
+        numberOfScavengers = UIManager.Singleton.GetnumberOfScavengers();
+        numberOfPlants = UIManager.Singleton.GetnumberOfPlants();
         if (numberOfCreatures != -1 && numberOfPredators != -1 && numberOfScavengers != -1 && numberOfPlants != -1)
         {
-            InvokeRepeating("SpawnPlant", 0, time); // Создает исходное количество растений раз в time секунд
+            InvokeRepeating(nameof(SpawnPlant), 0, time); // Создает исходное количество растений раз в time секунд
             Spawn(creaturePrefab, numberOfCreatures); // Создает исходиное количество травоядных
             Spawn(predatorPrefab, numberOfPredators); // Создает исходиное количество хищников
             Spawn(scavengerPrefab, numberOfScavengers); // Создает исходиное количество падальщиков
