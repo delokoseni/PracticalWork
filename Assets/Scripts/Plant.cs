@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class Plant : MonoBehaviour
 {
-    int energy = 20; // Энергия, которая будет отдана при съедении
+    private static int energy; // Энергия, которая будет отдана при съедении
 
+    private void Awake()
+    {
+        if (UIManager.Singleton.GetEnergy() != -1)
+            energy = UIManager.Singleton.GetEnergy();
+        else
+            energy = 20;
+    }
     private void OnEnable()
     {
         UIManager.TheEndOfTheWorld += Destroy; // Подписка на событие TheEndOfTheWorld

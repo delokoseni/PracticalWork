@@ -4,13 +4,22 @@ using UnityEngine;
 
 public class Carrion : MonoBehaviour
 {
-    private int energy = 20; // Энергия, которая будет отдана при съедении
+    private static int energy; // Энергия, которая будет отдана при съедении
 
     private void Update()
     {
         if (UIManager.Singleton.wasTheEndOfTheWorld)
             Destroy();
+        else
+            energy = 20;
     }
+
+    private void Awake()
+    {
+        if (UIManager.Singleton.GetEnergy() != -1)
+            energy = UIManager.Singleton.GetEnergy();
+    }
+
     private void OnEnable()
     {
         UIManager.TheEndOfTheWorld += Destroy; // Подписка на событие TheEndOfTheWorld

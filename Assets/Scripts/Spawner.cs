@@ -10,14 +10,14 @@ public class Spawner : MonoBehaviour
     public GameObject predatorPrefab; //
     public GameObject scavengerPrefab; //
     public GameObject carrionPrefab; // 
-    int numberOfCreatures; // Количество травоядных
-    int numberOfPredators; // Количество хищников
-    int numberOfScavengers; // Количество падальщиков
-    int numberOfPlants; // Количество растений
-    float time = 20f; // Время, через которое растения снова появятся
     public List<Vector2> carrionList; // 
     public List<Vector2> creatureList; //???
     public List<Vector2> plantList; //
+    private int numberOfCreatures; // Количество травоядных
+    private int numberOfPredators; // Количество хищников
+    private int numberOfScavengers; // Количество падальщиков
+    private int numberOfPlants; // Количество растений
+    private float time; // Время, через которое растения снова появятся
 
     private void Awake()
     {
@@ -57,12 +57,14 @@ public class Spawner : MonoBehaviour
     {
         UIManager.TheEndOfTheWorld += EndOfSpawning; // Подписка на событие TheEndOfTheWorld
         UIManager.StartOfTheWorld += SetData; // Подписка на событие StartOfTheWorld
+        UIManager.DataIsDone += SetData;
     }
 
     private void OnDisable() // ???
     {
         UIManager.TheEndOfTheWorld -= EndOfSpawning; // Отписка от события TheEndOfTheWorld
         UIManager.StartOfTheWorld -= SetData; // Отписка от события StartOfTheWorld
+        UIManager.DataIsDone -= SetData;
     }
 
     void EndOfSpawning()
@@ -78,12 +80,26 @@ public class Spawner : MonoBehaviour
         numberOfPredators = UIManager.Singleton.GetnumberOfPredators();
         numberOfScavengers = UIManager.Singleton.GetnumberOfScavengers();
         numberOfPlants = UIManager.Singleton.GetnumberOfPlants();
-        if (numberOfCreatures != -1 && numberOfPredators != -1 && numberOfScavengers != -1 && numberOfPlants != -1)
+        if (numberOfCreatures != -1 || numberOfPredators != -1 || numberOfScavengers != -1)
         {
-            InvokeRepeating(nameof(SpawnPlant), 0, time); // Создает исходное количество растений раз в time секунд
-            Spawn(creaturePrefab, numberOfCreatures); // Создает исходиное количество травоядных
-            Spawn(predatorPrefab, numberOfPredators); // Создает исходиное количество хищников
-            Spawn(scavengerPrefab, numberOfScavengers); // Создает исходиное количество падальщиков
+            if (numberOfPlants != -1)
+            {
+                InvokeRepeating(nameof(SpawnPlant), 0, time); // Создает исходное количество растений раз в time секунд
+                if (UIManager.Singleton.GetnumberOfHerbivores() != -2)
+                    Spawn(creaturePrefab, numberOfCreatures); // Создает исходиное количество травоядных
+                if (UIManager.Singleton.GetnumberOfPredators() != -1)
+                    Spawn(predatorPrefab, numberOfPredators); // Создает исходиное количество хищников
+                if (UIManager.Singleton.GetnumberOfScavengers() != -1)
+                    Spawn(scavengerPrefab, numberOfScavengers); // Создает исходиное количество падальщиков
+            }
         }
+    }
+    
+    void SetRespawnTime()
+    {
+        if (UIManager.Singleton.GetTimeOfPlantsRespawn() != -1)
+            time = UIManager.Singleton.GetTimeOfPlantsRespawn();
+        else
+            time = 20f;
     }
 }

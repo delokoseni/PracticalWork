@@ -18,7 +18,7 @@ public class Creature : MonoBehaviour
     protected int chanceOfMutation; // Шанс, с которым потомок сможет мутировать
     protected Color32 color; // Цвет существа
     public GameObject creaturePrefab; //  
-    public static Action<string> WasClicked;
+    public static Action<string> WasClicked; // Делегат
 
     void Start() // Метод, вызываемый при воспроизведении первого кадра
     {
@@ -40,15 +40,15 @@ public class Creature : MonoBehaviour
 
     void FixedUpdate() // 
     {
-        Vector2 currentPosition = rb.position; // Текущая позиция
         if (isMoving)
         { // Тут движение
-            Vector2 direction = (targetPosition - currentPosition).normalized; // Возвращает вектор единичной длины (направление)
-            float distance = Vector2.Distance(currentPosition, targetPosition); // Возвращает расстояние между точками
+            Vector2 currentPosition = rb.position;
+            Vector2 direction = (targetPosition - currentPosition).normalized;
+            float distance = Vector2.Distance(currentPosition, targetPosition);
 
             if (distance > 0.1f)
             {
-                rb.MovePosition(currentPosition + speed * Time.fixedDeltaTime * direction); // Передвигает точку
+                rb.MovePosition(currentPosition + speed * Time.fixedDeltaTime * direction);
             }
             else
             {
@@ -57,53 +57,24 @@ public class Creature : MonoBehaviour
         }
         else
         {
-            //Vector2 newtargetPosition = new Vector2(UnityEngine.Random.Range(0f, UIManager.singleton.GetWidth()),
-            //UnityEngine.Random.Range(0f, UIManager.singleton.GetHeight()));
-            Debug.Log(Spawner.Singleton.plantList.Count);
-            if (Spawner.Singleton.plantList.Count != 0)
-            {
-                float shortestDistance;
-                shortestDistance = Vector2.Distance(currentPosition, Spawner.Singleton.plantList[0]);
-                Vector2 newtargetPosition = Spawner.Singleton.plantList[0];
-                foreach (var i in Spawner.Singleton.plantList)
-                {
-                    if (Vector2.Distance(currentPosition, i) < shortestDistance)
-                    {
-                        shortestDistance = Vector2.Distance(currentPosition, i);
-                        newtargetPosition = i;
-                    }
-                }
-                targetPosition = newtargetPosition;
-                Move(newtargetPosition);
-            }
-            else
-            {
-                Vector2 newtargetPosition = new (UnityEngine.Random.Range(0f, UIManager.Singleton.GetWidth()),
-                    UnityEngine.Random.Range(0f, UIManager.Singleton.GetHeight()));
-                targetPosition = newtargetPosition;
-                Move(newtargetPosition);
-            }
+            Vector2 newtargetPosition = new(UnityEngine.Random.Range(0f, UIManager.Singleton.GetWidth()),
+                UnityEngine.Random.Range(0f, UIManager.Singleton.GetHeight()));
+            targetPosition = newtargetPosition;
+            Move(newtargetPosition);
         }
     }
 
     // Метод, реагирующий на контакты с другими объектами
-   // void OnCollisionEnter2D(Collision2D collision)
-    //{
-        /*if (collision.gameObject.CompareTag("Wall")) // Попытка исправить прилипание к стенам
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Creature")) // Попытка исправить слипание между собой
         {
-            Vector2 newtargetPosition = new Vector2(UnityEngine.Random.Range(0f, UIManager.singleton.GetWidth()), 
-                UnityEngine.Random.Range(0f, UIManager.singleton.GetHeight()));
+            Vector2 newtargetPosition = new (UnityEngine.Random.Range(0f, UIManager.Singleton.GetWidth()),
+                UnityEngine.Random.Range(0f, UIManager.Singleton.GetHeight()));
             targetPosition = newtargetPosition;
-            Move(newtargetPosition);
-        }*/
-        /*if (collision.gameObject.CompareTag("Creature")) // Попытка исправить слипание между собой
-        {
-            Vector2 newtargetPosition = new Vector2(UnityEngine.Random.Range(0f, UIManager.singleton.GetWidth()),
-                UnityEngine.Random.Range(0f, UIManager.singleton.GetHeight()));
-            targetPosition = newtargetPosition;
-            Move(newtargetPosition);
-        }*/
-    //}
+         Move(newtargetPosition);
+        }
+    }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -253,7 +224,8 @@ public class Creature : MonoBehaviour
 
     public void OnMouseDown()
     {
-        string str = "Скорость: " + speed + "\nРазмер: " + size + "\nСтартовая энергия: " + startenergy +
+        string str = "Скорость: " + speed + "\nРазмер: " + size + "\nСтартовая энергия: " + startenergy + 
+            "\nТекущая энерия: " + energy +
             "\nВремя, за которое расходуется 1 ед. энергии: " + time + "\nШанс мутации потомка: " +
             chanceOfMutation + "%\nЦвет: " + GetComponent<SpriteRenderer>().color.ToString();
         WasClicked?.Invoke(str);
