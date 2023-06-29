@@ -230,4 +230,6 @@ public class Creature : MonoBehaviour
             chanceOfMutation + "%\nײגוע: " + GetComponent<SpriteRenderer>().color.ToString();
         WasClicked?.Invoke(str);
     }
+
+    public float GetSize() { return size; }
 }

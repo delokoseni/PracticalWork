@@ -5,14 +5,6 @@ using UnityEngine;
 public class Scavenger : Creature
 {
 
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Plant") && energy <= 20)
-        {
-            Eat(collision.gameObject.GetComponent<Plant>());
-        }
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Carrion"))

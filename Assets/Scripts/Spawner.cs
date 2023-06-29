@@ -11,8 +11,10 @@ public class Spawner : MonoBehaviour
     public GameObject scavengerPrefab; //
     public GameObject carrionPrefab; // 
     public List<Vector2> carrionList; // 
-    public List<Vector2> creatureList; //???
     public List<Vector2> plantList; //
+    public List<Vector2> creatureList; //???
+    public List<Vector2> predatorList; //
+    public List<Vector2> scavengerList; //
     private int numberOfCreatures; // Количество травоядных
     private int numberOfPredators; // Количество хищников
     private int numberOfScavengers; // Количество падальщиков
