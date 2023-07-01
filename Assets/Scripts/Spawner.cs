@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.Intrinsics;
 using UnityEngine;
 
 public class Spawner : MonoBehaviour
@@ -15,16 +16,26 @@ public class Spawner : MonoBehaviour
     public List<Vector2> herbivoreList; //???
     public List<Vector2> predatorList; //
     public List<Vector2> scavengerList; //
-    private int numberOfHerbivores; // Количество травоядных
-    private int numberOfPredators; // Количество хищников
-    private int numberOfScavengers; // Количество падальщиков
-    private int numberOfPlants; // Количество растений
+    private int numberOfHerbivores; // Стартовое количество травоядных
+    private int numberOfPredators; // Стартовое количество хищников
+    private int numberOfScavengers; // Стартовое количество падальщиков
+    private int numberOfPlants; // Стартовое количество растений
     private float time; // Время, через которое растения снова появятся
-
+    public bool spawned = false;
+    private void Update()
+    {
+        if (spawned) {
+            GameObject[] arr = GameObject.FindGameObjectsWithTag("Herbivore");
+            NewCreatures(arr, "Herbivore", numberOfHerbivores, herbivorePrefab);
+            arr = GameObject.FindGameObjectsWithTag("Predator");
+            NewCreatures(arr, "Predator", numberOfPredators, predatorPrefab);
+            arr = GameObject.FindGameObjectsWithTag("Scavenger");
+            NewCreatures(arr, "Scavenger", numberOfScavengers, scavengerPrefab);
+        }
+    }
     private void Awake()
     {
         Singleton = this;
-        SetRespawnTime();
     }
 
     void Spawn(GameObject Prefab, int number)
@@ -75,6 +86,7 @@ public class Spawner : MonoBehaviour
         CancelInvoke(nameof(SpawnPlant));
         Spawner.Singleton.carrionList.Clear();
         Spawner.Singleton.plantList.Clear();
+        spawned = false;
     }
 
     void SetData()
@@ -83,16 +95,14 @@ public class Spawner : MonoBehaviour
         numberOfPredators = UIManager.Singleton.GetnumberOfPredators();
         numberOfScavengers = UIManager.Singleton.GetnumberOfScavengers();
         numberOfPlants = UIManager.Singleton.GetnumberOfPlants();
-        if (numberOfHerbivores != -1 && numberOfPredators != -1 && numberOfPlants != -1)
+        if (numberOfHerbivores != -1 && numberOfPredators != -1 && numberOfScavengers != -1 && numberOfPlants != -1)
         {
+            SetRespawnTime();
             InvokeRepeating(nameof(SpawnPlant), 0, time); // Создает исходное количество растений раз в time секунд
-            if (UIManager.Singleton.GetnumberOfHerbivores() != -1)
-                Spawn(herbivorePrefab, numberOfHerbivores); // Создает исходиное количество травоядных
-            if (UIManager.Singleton.GetnumberOfPredators() != -1)
-                Spawn(predatorPrefab, numberOfPredators); // Создает исходиное количество хищников
-            if (UIManager.Singleton.GetnumberOfScavengers() != -1)
-                Spawn(scavengerPrefab, numberOfScavengers); // Создает исходиное количество падальщиков
-
+            Spawn(herbivorePrefab, numberOfHerbivores); // Создает исходиное количество травоядных
+            Spawn(predatorPrefab, numberOfPredators); // Создает исходиное количество хищников
+            Spawn(scavengerPrefab, numberOfScavengers); // Создает исходиное количество падальщиков
+            spawned = true;
         }
     }
     
@@ -102,5 +112,19 @@ public class Spawner : MonoBehaviour
             time = UIManager.Singleton.GetTimeOfPlantsRespawn();
         else
             time = 20f;
+    }
+
+    void NewCreatures(GameObject[] arr, string tag, int numberOf, GameObject prefab)
+    {
+        System.Random rand = new();
+        arr = GameObject.FindGameObjectsWithTag(tag);
+        if (arr.Length <= 3 && numberOf > 3)
+        {
+            Spawn(prefab, rand.Next(5));
+        }
+        if (arr.Length == 0 && numberOf <= 3)
+        {
+            Spawn(prefab, rand.Next(5));
+        }
     }
 }

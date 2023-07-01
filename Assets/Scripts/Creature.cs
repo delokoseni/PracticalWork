@@ -170,11 +170,6 @@ abstract public class Creature : MonoBehaviour
         time = UIManager.Singleton.GetTime();
         startenergy = UIManager.Singleton.GetStartEnergy();
         chanceOfMutation = UIManager.Singleton.GetChanseOfMutation();
-        Debug.Log("speed " + speed);
-        Debug.Log("size " + size);
-        Debug.Log("time " + time);
-        Debug.Log("startenergy " + startenergy);
-        Debug.Log("chanceOfMutation " + chanceOfMutation);
     }
 
     public void OnMouseDown()

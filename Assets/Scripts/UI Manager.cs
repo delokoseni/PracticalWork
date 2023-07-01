@@ -69,6 +69,12 @@ public class UIManager : MonoBehaviour
                     dataIsOK = false;
                 }
             }
+            else
+            {
+                herbivoresInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "1 <= N <= 10";
+                herbivoresText.GetComponent<TextMeshProUGUI>().color = Color.red;
+                dataIsOK = false;
+            }
             if (predatorsInputField.text.Length != 0)
             {
                 if (int.Parse(predatorsInputField.text) > 0 && int.Parse(predatorsInputField.text) <= 10)
@@ -84,6 +90,12 @@ public class UIManager : MonoBehaviour
                     predatorsText.GetComponent<TextMeshProUGUI>().color = Color.red;
                     dataIsOK = false;
                 }
+            }
+            else
+            {
+                predatorsInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "1 <= N <= 10";
+                predatorsText.GetComponent<TextMeshProUGUI>().color = Color.red;
+                dataIsOK = false;
             }
             if (scavengersInputField.text.Length != 0)
             {
@@ -116,6 +128,12 @@ public class UIManager : MonoBehaviour
                     plantsText.GetComponent<TextMeshProUGUI>().color = Color.red;
                     dataIsOK = false;
                 }
+            }
+            else
+            {
+                plantsInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "0 < N <= 100";
+                plantsText.GetComponent<TextMeshProUGUI>().color = Color.red;
+                dataIsOK = false;
             }
             if (startenergyInputField.text.Length != 0)
             {
