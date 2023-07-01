@@ -53,149 +53,181 @@ public class UIManager : MonoBehaviour
         dataIsOK = true;
         try
         {
-            if (int.Parse(herbivoresInputField.text) > 0 && int.Parse(herbivoresInputField.text) <= 10)
+            if (herbivoresInputField.text.Length != 0)
             {
-                herbivoresInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите количество...";
-                herbivoresText.GetComponent<TextMeshProUGUI>().color = Color.white;
-                numberOfHerbivores = int.Parse(herbivoresInputField.text);
+                if (int.Parse(herbivoresInputField.text) > 0 && int.Parse(herbivoresInputField.text) <= 10)
+                {
+                    herbivoresInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите количество...";
+                    herbivoresText.GetComponent<TextMeshProUGUI>().color = Color.white;
+                    numberOfHerbivores = int.Parse(herbivoresInputField.text);
+                }
+                else
+                {
+                    herbivoresInputField.text = "";
+                    herbivoresInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "1 <= N <= 10";
+                    herbivoresText.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    dataIsOK = false;
+                }
             }
-            else
+            if (predatorsInputField.text.Length != 0)
             {
-                herbivoresInputField.text = "";
-                herbivoresInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "1 <= N <= 10";
-                herbivoresText.GetComponent<TextMeshProUGUI>().color = Color.red;
-                dataIsOK = false;
+                if (int.Parse(predatorsInputField.text) > 0 && int.Parse(predatorsInputField.text) <= 10)
+                {
+                    predatorsInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите количество...";
+                    predatorsText.GetComponent<TextMeshProUGUI>().color = Color.white;
+                    numberOfPredators = int.Parse(predatorsInputField.text);
+                }
+                else
+                {
+                    predatorsInputField.text = "";
+                    predatorsInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "1 <= N <= 10";
+                    predatorsText.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    dataIsOK = false;
+                }
             }
-            if (int.Parse(predatorsInputField.text) > 0 && int.Parse(predatorsInputField.text) <= 10)
+            if (scavengersInputField.text.Length != 0)
             {
-                predatorsInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите количество...";
-                predatorsText.GetComponent<TextMeshProUGUI>().color = Color.white;
-                numberOfPredators = int.Parse(predatorsInputField.text);
-            }
-            else
-            {
-                predatorsInputField.text = "";
-                predatorsInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "1 <= N <= 10";
-                predatorsText.GetComponent<TextMeshProUGUI>().color = Color.red;
-                dataIsOK = false;
-            }
-            if (int.Parse(scavengersInputField.text) >= 0 && int.Parse(scavengersInputField.text) <= 10)
+                if (int.Parse(scavengersInputField.text) >= 0 && int.Parse(scavengersInputField.text) <= 10)
                 {
                     scavengersInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите количество...";
                     scavengersText.GetComponent<TextMeshProUGUI>().color = Color.white;
                     numberOfScavengers = int.Parse(scavengersInputField.text);
                 }
-            else
+                else
                 {
                     scavengersInputField.text = "";
                     scavengersInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "0 <= N <= 10";
                     scavengersText.GetComponent<TextMeshProUGUI>().color = Color.red;
                     dataIsOK = false;
                 }
-            if (int.Parse(plantsInputField.text) >= 1 && int.Parse(plantsInputField.text) <= 100)
-            {
-                plantsInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите количество...";
-                plantsText.GetComponent<TextMeshProUGUI>().color = Color.white;
-                numberOfPlants = int.Parse(plantsInputField.text);
             }
-            else
+            if (plantsInputField.text.Length != 0)
             {
-                plantsInputField.text = "";
-                plantsInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "0 < N <= 100";
-                plantsText.GetComponent<TextMeshProUGUI>().color = Color.red;
-                dataIsOK = false;
+                if (int.Parse(plantsInputField.text) >= 1 && int.Parse(plantsInputField.text) <= 100)
+                {
+                    plantsInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите количество...";
+                    plantsText.GetComponent<TextMeshProUGUI>().color = Color.white;
+                    numberOfPlants = int.Parse(plantsInputField.text);
+                }
+                else
+                {
+                    plantsInputField.text = "";
+                    plantsInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "0 < N <= 100";
+                    plantsText.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    dataIsOK = false;
+                }
             }
-            if (int.Parse(startenergyInputField.text) >= 1 && int.Parse(startenergyInputField.text) <= 1000)
+            if (startenergyInputField.text.Length != 0)
             {
-                startenergyInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите количество...";
-                startenergyText.GetComponent<TextMeshProUGUI>().color = Color.white;
-                startenergy = int.Parse(startenergyInputField.text);
+                if (int.Parse(startenergyInputField.text) >= 1 && int.Parse(startenergyInputField.text) <= 1000)
+                {
+                    startenergyInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите количество...";
+                    startenergyText.GetComponent<TextMeshProUGUI>().color = Color.white;
+                    startenergy = int.Parse(startenergyInputField.text);
+                }
+                else
+                {
+                    startenergyInputField.text = "";
+                    startenergyInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "1 <= N <= 1000";
+                    startenergyText.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    dataIsOK = false;
+                }
             }
-            else
+            if (chanseofmutationInputField.text.Length != 0)
             {
-                startenergyInputField.text = "";
-                startenergyInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "1 <= N <= 1000";
-                startenergyText.GetComponent<TextMeshProUGUI>().color = Color.red;
-                dataIsOK = false;
+                if (int.Parse(chanseofmutationInputField.text) >= 0 && int.Parse(chanseofmutationInputField.text) <= 100)
+                {
+                    chanseofmutationInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите количество %...";
+                    chanseofmutationText.GetComponent<TextMeshProUGUI>().color = Color.white;
+                    chanseofmutation = int.Parse(chanseofmutationInputField.text);
+                }
+                else
+                {
+                    chanseofmutationInputField.text = "";
+                    chanseofmutationInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "0 <= N <= 100";
+                    chanseofmutationText.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    dataIsOK = false;
+                }
             }
-            if (int.Parse(chanseofmutationInputField.text) >= 0 && int.Parse(chanseofmutationInputField.text) <= 100)
+            if (speedInputField.text.Length != 0)
             {
-                chanseofmutationInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите количество %...";
-                chanseofmutationText.GetComponent<TextMeshProUGUI>().color = Color.white;
-                chanseofmutation = int.Parse(chanseofmutationInputField.text);
+                if (float.Parse(speedInputField.text) >= 1 && float.Parse(speedInputField.text) <= 20)
+                {
+                    speedInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите скорость...";
+                    speedText.GetComponent<TextMeshProUGUI>().color = Color.white;
+                    speed = float.Parse(speedInputField.text);
+                }
+                else
+                {
+                    speedInputField.text = "";
+                    speedInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "1 <= N <= 20";
+                    speedText.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    dataIsOK = false;
+                }
             }
-            else
+            if (sizeInputField.text.Length != 0)
             {
-                chanseofmutationInputField.text = "";
-                chanseofmutationInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "0 <= N <= 100";
-                chanseofmutationText.GetComponent<TextMeshProUGUI>().color = Color.red;
-                dataIsOK = false;
+                if (float.Parse(sizeInputField.text) >= 1 && float.Parse(sizeInputField.text) <= 3)
+                {
+                    sizeInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите скорость...";
+                    sizeText.GetComponent<TextMeshProUGUI>().color = Color.white;
+                    size = float.Parse(sizeInputField.text);
+                }
+                else
+                {
+                    sizeInputField.text = "";
+                    sizeInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "1 <= N <= 3";
+                    sizeText.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    dataIsOK = false;
+                }
             }
-            if (float.Parse(speedInputField.text) >= 1 && float.Parse(speedInputField.text) <= 20)
+            if (timeInputField.text.Length != 0)
             {
-                speedInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите скорость...";
-                speedText.GetComponent<TextMeshProUGUI>().color = Color.white;
-                speed = float.Parse(speedInputField.text);
+                if (float.Parse(timeInputField.text) >= 0.1f && float.Parse(timeInputField.text) <= 10f)
+                {
+                    timeInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите врем€...";
+                    timeText.GetComponent<TextMeshProUGUI>().color = Color.white;
+                    time = float.Parse(timeInputField.text);
+                }
+                else
+                {
+                    timeInputField.text = "";
+                    timeInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "0.1 <= N <= 10";
+                    timeText.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    dataIsOK = false;
+                }
             }
-            else
+            if (timeOfPlantsRespawnInputField.text.Length != 0)
             {
-                speedInputField.text = "";
-                speedInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "1 <= N <= 20";
-                speedText.GetComponent<TextMeshProUGUI>().color = Color.red;
-                dataIsOK = false;
+                if (float.Parse(timeOfPlantsRespawnInputField.text) >= 1f && float.Parse(timeOfPlantsRespawnInputField.text) <= 100f)
+                {
+                    timeOfPlantsRespawnInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите врем€...";
+                    timeOfPlantsRespawnText.GetComponent<TextMeshProUGUI>().color = Color.white;
+                    timeOfPlantsRespawn = float.Parse(timeOfPlantsRespawnInputField.text);
+                }
+                else
+                {
+                    timeOfPlantsRespawnInputField.text = "";
+                    timeOfPlantsRespawnInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "1 <= N <= 100";
+                    timeOfPlantsRespawnText.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    dataIsOK = false;
+                }
             }
-            if (float.Parse(sizeInputField.text) >= 1 && float.Parse(sizeInputField.text) <= 3)
+            if (energyInputField.text.Length != 0)
             {
-                sizeInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите скорость...";
-                sizeText.GetComponent<TextMeshProUGUI>().color = Color.white;
-                size = float.Parse(sizeInputField.text);
-            }
-            else
-            {
-                sizeInputField.text = "";
-                sizeInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "1 <= N <= 3";
-                sizeText.GetComponent<TextMeshProUGUI>().color = Color.red;
-                dataIsOK = false;
-            }
-            if (float.Parse(timeInputField.text) >= 0.1f && float.Parse(timeInputField.text) <= 10f)
-            {
-                timeInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите врем€...";
-                timeText.GetComponent<TextMeshProUGUI>().color = Color.white;
-                time = float.Parse(timeInputField.text);
-            }
-            else
-            {
-                timeInputField.text = "";
-                timeInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "0.1 <= N <= 10";
-                timeText.GetComponent<TextMeshProUGUI>().color = Color.red;
-                dataIsOK = false;
-            }
-            if (float.Parse(timeOfPlantsRespawnInputField.text) >= 1f && float.Parse(timeOfPlantsRespawnInputField.text) <= 100f)
-            {
-                timeOfPlantsRespawnInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите врем€...";
-                timeOfPlantsRespawnText.GetComponent<TextMeshProUGUI>().color = Color.white;
-                timeOfPlantsRespawn = float.Parse(timeOfPlantsRespawnInputField.text);
-            }
-            else
-            {
-                timeOfPlantsRespawnInputField.text = "";
-                timeOfPlantsRespawnInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "1 <= N <= 100";
-                timeOfPlantsRespawnText.GetComponent<TextMeshProUGUI>().color = Color.red;
-                dataIsOK = false;
-            }
-
-            if (int.Parse(energyInputField.text) >= 1 && int.Parse(energyInputField.text) <= 100)
-            {
-                energyInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите количество...";
-                energyText.GetComponent<TextMeshProUGUI>().color = Color.white;
-                energy = int.Parse(energyInputField.text);
-            }
-            else
-            {
-                energyInputField.text = "";
-                energyInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "1 <= N <= 100";
-                energyText.GetComponent<TextMeshProUGUI>().color = Color.red;
-                dataIsOK = false;
+                if (int.Parse(energyInputField.text) >= 1 && int.Parse(energyInputField.text) <= 100)
+                {
+                    energyInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите количество...";
+                    energyText.GetComponent<TextMeshProUGUI>().color = Color.white;
+                    energy = int.Parse(energyInputField.text);
+                }
+                else
+                {
+                    energyInputField.text = "";
+                    energyInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "1 <= N <= 100";
+                    energyText.GetComponent<TextMeshProUGUI>().color = Color.red;
+                    dataIsOK = false;
+                }
             }
         }
         catch{ }
@@ -230,7 +262,15 @@ public class UIManager : MonoBehaviour
         isStarted = false;
         wasTheEndOfTheWorld = true;
         TheEndOfTheWorld?.Invoke(); // ¬ызов событи€, если на него есть подписавшиес€ методы
+        Spawner.Singleton.plantList.Clear();
+        Spawner.Singleton.herbivoreList.Clear();
+        Spawner.Singleton.predatorList.Clear();
+        Spawner.Singleton.scavengerList.Clear();
+        Spawner.Singleton.carrionList.Clear();
         InfoPanelClose();
+        isPaused = false;
+        panel.SetActive(false);
+        Time.timeScale = 1f;
         numberOfHerbivores = 0;
         numberOfPredators = 0;
         numberOfScavengers = 0;

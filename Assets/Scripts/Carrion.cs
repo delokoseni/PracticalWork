@@ -10,8 +10,6 @@ public class Carrion : MonoBehaviour
     {
         if (UIManager.Singleton.wasTheEndOfTheWorld)
             Destroy();
-        else
-            energy = 20;
     }
 
     private void Awake()
@@ -39,6 +37,7 @@ public class Carrion : MonoBehaviour
 
     private void Destroy()
     {
+        Spawner.Singleton.carrionList.Remove(transform.position);
         Destroy(gameObject);
     }
 }

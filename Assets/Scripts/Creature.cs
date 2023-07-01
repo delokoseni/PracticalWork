@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
-public class Creature : MonoBehaviour
+abstract public class Creature : MonoBehaviour
 {
     public Rigidbody2D rb; // Класс, описывающий физику объекта 
     protected Vector2 targetPosition; // Позиция, в которую движется объект класса
@@ -20,6 +20,11 @@ public class Creature : MonoBehaviour
     public GameObject creaturePrefab; //  
     public static Action<string> WasClicked; // Делегат
 
+
+    private void Awake()
+    {
+        SetData();
+    }
     void Start() // Метод, вызываемый при воспроизведении первого кадра
     {
         rb = GetComponent<Rigidbody2D>(); // Получает ссылку на указанный объект класса
@@ -33,55 +38,13 @@ public class Creature : MonoBehaviour
         InvokeRepeating(nameof(Decreaseenergy), time, time); // Каждое time кол-во времени вызывается метод
     }
 
-    private void Awake() // Вызывается лишь 1 раз для установки данных
-    {
-        SetData();
-    }
-
-    void FixedUpdate() // 
-    {
-        if (isMoving)
-        { // Тут движение
-            Vector2 currentPosition = rb.position;
-            Vector2 direction = (targetPosition - currentPosition).normalized;
-            float distance = Vector2.Distance(currentPosition, targetPosition);
-
-            if (distance > 0.1f)
-            {
-                rb.MovePosition(currentPosition + speed * Time.fixedDeltaTime * direction);
-            }
-            else
-            {
-                isMoving = false;
-            }
-        }
-        else
-        {
-            Vector2 newtargetPosition = new(UnityEngine.Random.Range(0f, UIManager.Singleton.GetWidth()),
-                UnityEngine.Random.Range(0f, UIManager.Singleton.GetHeight()));
-            targetPosition = newtargetPosition;
-            Move(newtargetPosition);
-        }
-    }
-
     // Метод, реагирующий на контакты с другими объектами
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.CompareTag("Creature")) // Попытка исправить слипание между собой
-        {
-            Vector2 newtargetPosition = new (UnityEngine.Random.Range(0f, UIManager.Singleton.GetWidth()),
-                UnityEngine.Random.Range(0f, UIManager.Singleton.GetHeight()));
-            targetPosition = newtargetPosition;
-         Move(newtargetPosition);
-        }
-    }
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.CompareTag("Plant"))
-        {
-            Eat(collision.gameObject.GetComponent<Plant>());
-        }
+        Vector2 newtargetPosition = new (UnityEngine.Random.Range(0f, UIManager.Singleton.GetWidth()),
+           UnityEngine.Random.Range(0f, UIManager.Singleton.GetHeight()));
+        targetPosition = newtargetPosition;
+        Move(newtargetPosition);
     }
 
         private void OnEnable()
@@ -94,11 +57,8 @@ public class Creature : MonoBehaviour
         UIManager.TheEndOfTheWorld -= Die; // Отписка от события TheEndOfTheWorld
     }
 
-    public void Move(Vector2 newPosition) // Метод передвижения
-    {
-        targetPosition = Camera.main.ScreenToWorldPoint(newPosition);
-        isMoving = true;
-    }
+    public abstract void Move(Vector2 newPosition); // Метод передвижения
+
 
     public void Decreaseenergy() // Метод утраты энергии
     {
@@ -115,16 +75,6 @@ public class Creature : MonoBehaviour
         Destroy(gameObject);
         if (!UIManager.Singleton.wasTheEndOfTheWorld)
             Spawner.Singleton.SpawnCarrion(position);
-    }
-
-    public void Eat(Plant plant) // Метод питания
-    {
-        int receivedenergy = plant.Die();
-        energy += receivedenergy;
-        if (energy > startenergy)
-            energy = startenergy;
-        if (energy == 100)
-            Multiply();
     }
 
     public void Multiply() // Метод размножения
@@ -220,6 +170,11 @@ public class Creature : MonoBehaviour
         time = UIManager.Singleton.GetTime();
         startenergy = UIManager.Singleton.GetStartEnergy();
         chanceOfMutation = UIManager.Singleton.GetChanseOfMutation();
+        Debug.Log("speed " + speed);
+        Debug.Log("size " + size);
+        Debug.Log("time " + time);
+        Debug.Log("startenergy " + startenergy);
+        Debug.Log("chanceOfMutation " + chanceOfMutation);
     }
 
     public void OnMouseDown()

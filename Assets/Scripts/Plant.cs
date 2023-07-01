@@ -26,6 +26,7 @@ public class Plant : MonoBehaviour
     public int Die()
     {
         Destroy(gameObject);
+        Spawner.Singleton.plantList.Remove(transform.position);
         return energy;
     }
 

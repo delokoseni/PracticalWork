@@ -8,6 +8,7 @@ TagManager:
   - Creature
   - Plant
   - Carrion
+  - Herbivore
   layers:
   - Default
   - TransparentFX
