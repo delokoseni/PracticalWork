@@ -19,25 +19,15 @@ abstract public class Creature : MonoBehaviour
     protected Color32 color; // Цвет существа
     public GameObject creaturePrefab; //  
     public static Action<string> WasClicked; // Делегат
-
-
     private void Awake()
     {
         SetData();
     }
     void Start() // Метод, вызываемый при воспроизведении первого кадра
     {
-        rb = GetComponent<Rigidbody2D>(); // Получает ссылку на указанный объект класса
-        Vector2 sizetoscale = new (size, size); // Вектор для присвоения размера
-        transform.localScale = sizetoscale; // Присвоение стартового размера объекта класса
-        energy = startenergy; // Присвоение текущей энергии
-        transform.localScale = new Vector3(size, size, 0); // Присвоение размеров;
-        targetPosition = new Vector2(UnityEngine.Random.Range(0f, UIManager.Singleton.GetWidth()),
-            UnityEngine.Random.Range(0f, UIManager.Singleton.GetHeight()));
+        Born();
         Move(targetPosition);
-        InvokeRepeating(nameof(Decreaseenergy), time, time); // Каждое time кол-во времени вызывается метод
     }
-
     // Метод, реагирующий на контакты с другими объектами
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -46,20 +36,15 @@ abstract public class Creature : MonoBehaviour
         targetPosition = newtargetPosition;
         Move(newtargetPosition);
     }
-
         private void OnEnable()
     {
         UIManager.TheEndOfTheWorld += Die; // Подписка на событие TheEndOfTheWorld
     }
-
     private void OnDisable()
     {
         UIManager.TheEndOfTheWorld -= Die; // Отписка от события TheEndOfTheWorld
     }
-
     public abstract void Move(Vector2 newPosition); // Метод передвижения
-
-
     public void Decreaseenergy() // Метод утраты энергии
     {
         energy--;
@@ -68,7 +53,6 @@ abstract public class Creature : MonoBehaviour
             Die();
         }
     }
-
     public void Die() // Метод смерти
     {
         Vector3 position = transform.position;
@@ -76,14 +60,12 @@ abstract public class Creature : MonoBehaviour
         if (!UIManager.Singleton.wasTheEndOfTheWorld)
             Spawner.Singleton.SpawnCarrion(position);
     }
-
     public void Multiply() // Метод размножения
     {
         Vector3 spawnPosition = transform.position;
         GameObject newcreature = Instantiate(creaturePrefab, spawnPosition, Quaternion.identity);
         Mutate(newcreature.GetComponent<Creature>());
     }
-
     public void Mutate(Creature newcreature) // Метод мутирования
     {
         System.Random rand = new ();
@@ -162,7 +144,6 @@ abstract public class Creature : MonoBehaviour
             }
         }
     }
-
     public void SetData() // Устанавливает исходные данные
     {
         speed = UIManager.Singleton.GetSpeed();
@@ -171,7 +152,6 @@ abstract public class Creature : MonoBehaviour
         startenergy = UIManager.Singleton.GetStartEnergy();
         chanceOfMutation = UIManager.Singleton.GetChanseOfMutation();
     }
-
     public void OnMouseDown()
     {
         string str = "Скорость: " + speed + "\nРазмер: " + size + "\nСтартовая энергия: " + startenergy + 
@@ -180,6 +160,16 @@ abstract public class Creature : MonoBehaviour
             chanceOfMutation + "%\nЦвет: " + GetComponent<SpriteRenderer>().color.ToString();
         WasClicked?.Invoke(str);
     }
-
     public float GetSize() { return size; }
+    public void Born()
+    {
+        rb = GetComponent<Rigidbody2D>(); // Получает ссылку на указанный объект класса
+        Vector2 sizetoscale = new(size, size); // Вектор для присвоения размера
+        transform.localScale = sizetoscale; // Присвоение стартового размера объекта класса
+        energy = startenergy; // Присвоение текущей энергии
+        transform.localScale = new Vector3(size, size, 0); // Присвоение размеров;
+        targetPosition = new Vector2(UnityEngine.Random.Range(0f, UIManager.Singleton.GetWidth()),
+            UnityEngine.Random.Range(0f, UIManager.Singleton.GetHeight()));
+        InvokeRepeating(nameof(Decreaseenergy), time, time); // Каждое time кол-во времени вызывается метод
+    }
 }

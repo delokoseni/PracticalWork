@@ -9,6 +9,8 @@ TagManager:
   - Plant
   - Carrion
   - Herbivore
+  - Predator
+  - Scavenger
   layers:
   - Default
   - TransparentFX

@@ -99,7 +99,7 @@ public class UIManager : MonoBehaviour
             }
             if (scavengersInputField.text.Length != 0)
             {
-                if (int.Parse(scavengersInputField.text) >= 0 && int.Parse(scavengersInputField.text) <= 10)
+                if (int.Parse(scavengersInputField.text) > 0 && int.Parse(scavengersInputField.text) <= 10)
                 {
                     scavengersInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "¬ведите количество...";
                     scavengersText.GetComponent<TextMeshProUGUI>().color = Color.white;
@@ -108,10 +108,16 @@ public class UIManager : MonoBehaviour
                 else
                 {
                     scavengersInputField.text = "";
-                    scavengersInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "0 <= N <= 10";
+                    scavengersInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "0 < N <= 10";
                     scavengersText.GetComponent<TextMeshProUGUI>().color = Color.red;
                     dataIsOK = false;
                 }
+            }
+            else
+            {
+                scavengersInputField.placeholder.GetComponent<TextMeshProUGUI>().text = "0 < N <= 10";
+                scavengersText.GetComponent<TextMeshProUGUI>().color = Color.red;
+                dataIsOK = false;
             }
             if (plantsInputField.text.Length != 0)
             {
@@ -301,110 +307,93 @@ public class UIManager : MonoBehaviour
         time = 1f;
         timeOfPlantsRespawn = 20f;
 }
-
     public int GetnumberOfHerbivores()
     {
         if(dataIsOK)
             return numberOfHerbivores;
         else return -1;
     }
-
     public int GetnumberOfPredators()
     {
         if (dataIsOK)
             return numberOfPredators;
         else return -1;
     }
-
     public int GetnumberOfScavengers()
     {
         if (dataIsOK)
             return numberOfScavengers;
         else return -1;
     }
-
     public int GetnumberOfPlants()
     {
         if (dataIsOK)
             return numberOfPlants;
         else return -1;
     }
-
     public float GetSpeed()
     {
         if (dataIsOK)
             return speed;
         else return -1f;
     }
-
     public float GetTime()
     {
         if (dataIsOK)
             return time;
         else return -1f;
     }
-
     public float GetSize()
     {
         if (dataIsOK)
             return size;
         else return -1f;
     }
-
     public int GetStartEnergy()
     {
         if (dataIsOK)
             return startenergy;
         else return -1;
     }
-
     public int GetChanseOfMutation()
     {
         if (dataIsOK)
             return chanseofmutation;
         else return -1;
     }
-
     public int GetEnergy()
     {
         if (dataIsOK)
             return energy;
         else return -1;
     }
-
     public float GetTimeOfPlantsRespawn()
     {
         if (dataIsOK)
             return timeOfPlantsRespawn;
         else return -1;
     }
-
     public float GetWidth()
     {
         return width;
     }
-
     public float GetHeight()
     {
         return height;
     }
-
     private void InfoPanelShow(string str)
     {
         infoPanel.SetActive(true);
         infoText.text = str;
     }
-
     public void InfoPanelClose()
     {
         infoPanel.SetActive(false);
     }
-
     public void Close()
     {
         Application.Quit();
     }
-
     public void IntCheckCorrect(TMP_InputField inputField, TextMeshProUGUI someText, int min, int max, int number, int i)
     {
         if (int.Parse(scavengersInputField.text) >= min && int.Parse(scavengersInputField.text) <= max)
@@ -421,7 +410,6 @@ public class UIManager : MonoBehaviour
             dataIsOK = false;
         }
     }
-
     public int FloatCheckCorrect(TMP_InputField inputField, float min, float max, float number)
     {
         if (inputField.text.Length > 0 && float.Parse(inputField.text) >= min && float.Parse(inputField.text) <= max)

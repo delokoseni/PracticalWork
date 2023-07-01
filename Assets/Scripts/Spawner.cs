@@ -26,18 +26,17 @@ public class Spawner : MonoBehaviour
     {
         if (spawned) {
             GameObject[] arr = GameObject.FindGameObjectsWithTag("Herbivore");
-            NewCreatures(arr, "Herbivore", numberOfHerbivores, herbivorePrefab);
+            NewCreatures(arr,numberOfHerbivores, herbivorePrefab);
             arr = GameObject.FindGameObjectsWithTag("Predator");
-            NewCreatures(arr, "Predator", numberOfPredators, predatorPrefab);
+            NewCreatures(arr, numberOfPredators, predatorPrefab);
             arr = GameObject.FindGameObjectsWithTag("Scavenger");
-            NewCreatures(arr, "Scavenger", numberOfScavengers, scavengerPrefab);
+            NewCreatures(arr, numberOfScavengers, scavengerPrefab);
         }
     }
     private void Awake()
     {
         Singleton = this;
     }
-
     void Spawn(GameObject Prefab, int number)
     {
         for (int i = 0; i < number; i++)
@@ -48,7 +47,6 @@ public class Spawner : MonoBehaviour
             Instantiate(Prefab, spawnPosition, Quaternion.identity);
         }
     }
-
     void SpawnPlant()
     {
         for (int i = 0; i < numberOfPlants; i++)
@@ -60,27 +58,23 @@ public class Spawner : MonoBehaviour
             plantList.Add(newPlant.transform.position);
         }
     }
-
     public void SpawnCarrion(Vector2 spawnPosition)
     {
         GameObject newCarrion = Instantiate(carrionPrefab, spawnPosition, Quaternion.identity);
         carrionList.Add(newCarrion.transform.position);
     }
-
     private void OnEnable()
     {
         UIManager.TheEndOfTheWorld += EndOfSpawning; // Подписка на событие TheEndOfTheWorld
         UIManager.StartOfTheWorld += SetData; // Подписка на событие StartOfTheWorld
         UIManager.DataIsDone += SetData;
     }
-
     private void OnDisable() // ???
     {
         UIManager.TheEndOfTheWorld -= EndOfSpawning; // Отписка от события TheEndOfTheWorld
         UIManager.StartOfTheWorld -= SetData; // Отписка от события StartOfTheWorld
         UIManager.DataIsDone -= SetData;
     }
-
     void EndOfSpawning()
     {
         CancelInvoke(nameof(SpawnPlant));
@@ -88,7 +82,6 @@ public class Spawner : MonoBehaviour
         Spawner.Singleton.plantList.Clear();
         spawned = false;
     }
-
     void SetData()
     {
         numberOfHerbivores = UIManager.Singleton.GetnumberOfHerbivores();
@@ -105,7 +98,6 @@ public class Spawner : MonoBehaviour
             spawned = true;
         }
     }
-    
     void SetRespawnTime()
     {
         if (UIManager.Singleton.GetTimeOfPlantsRespawn() != -1)
@@ -113,11 +105,9 @@ public class Spawner : MonoBehaviour
         else
             time = 20f;
     }
-
-    void NewCreatures(GameObject[] arr, string tag, int numberOf, GameObject prefab)
+    void NewCreatures(GameObject[] arr, int numberOf, GameObject prefab)
     {
         System.Random rand = new();
-        arr = GameObject.FindGameObjectsWithTag(tag);
         if (arr.Length <= 3 && numberOf > 3)
         {
             Spawn(prefab, rand.Next(5));

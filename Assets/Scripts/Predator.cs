@@ -29,7 +29,6 @@ public class Predator : Creature
             Move(newtargetPosition);
         }
     }
-
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Herbivore")) 
@@ -48,16 +47,14 @@ public class Predator : Creature
                 energy += receivedenergy;
                 if (energy > startenergy)
                     energy = startenergy;
-                if (energy == 100)
+                if (energy == startenergy)
                     Multiply();
             }
         }
     }
-
     public override void Move(Vector2 newPosition) // Метод передвижения
     {
         targetPosition = Camera.main.ScreenToWorldPoint(newPosition);
         isMoving = true;
     }
-
 }

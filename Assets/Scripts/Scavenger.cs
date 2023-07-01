@@ -29,7 +29,6 @@ public class Scavenger : Creature
             Move(newtargetPosition);
         }
     }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.CompareTag("Carrion"))
@@ -37,17 +36,15 @@ public class Scavenger : Creature
             Eat(collision.gameObject.GetComponent<Carrion>());
         }
     }
-
     public void Eat(Carrion carrion) // Метод питания
     {
         int receivedenergy = carrion.Eaten();
         energy += receivedenergy;
         if (energy > startenergy)
             energy = startenergy;
-        if (energy == 100)
+        if (energy == startenergy)
             Multiply();
     }
-
     public override void Move(Vector2 newPosition) // Метод передвижения
     {
         targetPosition = Camera.main.ScreenToWorldPoint(newPosition);

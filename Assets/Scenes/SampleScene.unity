@@ -238,6 +238,7 @@ MonoBehaviour:
   herbivoreList: []
   predatorList: []
   scavengerList: []
+  spawned: 0
 --- !u!1 &1362432146
 GameObject:
   m_ObjectHideFlags: 0
