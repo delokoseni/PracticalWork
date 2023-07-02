@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Scavenger : Creature
 {
@@ -21,31 +18,15 @@ public class Scavenger : Creature
     {
         if (Spawner.Singleton.carrionList.Count == 0)
         {
-            targetPosition = new Vector2(Random.Range(-10f, 10f), Random.Range(-10f, 10f));
+            targetPosition = new(Random.Range(-10f, 10f), Random.Range(-10f, 10f));
         }
         else
         {
-            int index = FindNearestPositionIndex();
+            int index = FindNearestPositionIndex(Spawner.Singleton.carrionList);
             targetPosition = Spawner.Singleton.carrionList[index];
         }
 
         isMoving = true;
-    }
-    private int FindNearestPositionIndex()
-    {
-        float minDistance = float.MaxValue;
-        int index = 0;
-
-        for (int i = 0; i < Spawner.Singleton.carrionList.Count; i++)
-        {
-            float distance = Vector2.Distance(transform.position, Spawner.Singleton.carrionList[i]);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                index = i;
-            }
-        }
-        return index;
     }
     private void FixedUpdate()
     {

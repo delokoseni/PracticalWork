@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class Herbivore : Creature
 {
@@ -39,32 +36,15 @@ public class Herbivore : Creature
     {
         if (Spawner.Singleton.plantList.Count == 0)
         {
-            targetPosition = new Vector2(Random.Range(-10f, 10f), Random.Range(-10f, 10f));
+            targetPosition = new(Random.Range(-10f, 10f), Random.Range(-10f, 10f));
         }
         else
         {
-            int index = FindNearestPositionIndex();
+            int index = FindNearestPositionIndex(Spawner.Singleton.plantList);
             targetPosition = Spawner.Singleton.plantList[index];
         }
 
         isMoving = true;
-    }
-    private int FindNearestPositionIndex()
-    {
-        float minDistance = float.MaxValue;
-        int index = 0;
-
-        for (int i = 0; i < Spawner.Singleton.plantList.Count; i++)
-        {
-            float distance = Vector2.Distance(transform.position, Spawner.Singleton.plantList[i]);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                index = i;
-            }
-        }
-
-        return index;
     }
     // Метод, реагирующий на контакты с другими объектами
     void OnCollisionEnter2D(Collision2D collision)

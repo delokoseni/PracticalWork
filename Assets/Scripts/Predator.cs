@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Predator : Creature
@@ -28,20 +26,12 @@ public class Predator : Creature
         }
         else
         {
-            Vector2 newtargetPosition = new(UnityEngine.Random.Range(0f, UIManager.Singleton.GetWidth()),
-                UnityEngine.Random.Range(0f, UIManager.Singleton.GetHeight()));
+            Vector2 newtargetPosition = new(Random.Range(0f, UIManager.Singleton.GetWidth()),
+                Random.Range(0f, UIManager.Singleton.GetHeight()));
             targetPosition = newtargetPosition;
             Move(newtargetPosition);
         }
     }
-    // Метод, реагирующий на контакты с другими объектами
-    //void OnCollisionEnter2D(Collision2D collision)
-    //{
-     //   Vector2 newtargetPosition = new(UnityEngine.Random.Range(0f, UIManager.Singleton.GetWidth()),
-     //      UnityEngine.Random.Range(0f, UIManager.Singleton.GetHeight()));
-    //    targetPosition = newtargetPosition;
-    //    Move(newtargetPosition);
-   // }
     public void Move(Vector2 newPosition) // Метод передвижения
     {
         targetPosition = Camera.main.ScreenToWorldPoint(newPosition);

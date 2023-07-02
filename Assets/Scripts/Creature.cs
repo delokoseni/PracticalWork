@@ -1,10 +1,6 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.Burst.Intrinsics;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 abstract public class Creature : MonoBehaviour
@@ -171,5 +167,21 @@ abstract public class Creature : MonoBehaviour
         targetPosition = new Vector2(UnityEngine.Random.Range(0f, UIManager.Singleton.GetWidth()),
             UnityEngine.Random.Range(0f, UIManager.Singleton.GetHeight()));
         InvokeRepeating(nameof(Decreaseenergy), time, time); // Каждое time кол-во времени вызывается метод
+    }
+    public int FindNearestPositionIndex(List<Vector2> values)
+    {
+        float minDistance = float.MaxValue;
+        int index = 0;
+
+        for (int i = 0; i < values.Count; i++)
+        {
+            float distance = Vector2.Distance(transform.position, values[i]);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                index = i;
+            }
+        }
+        return index;
     }
 }

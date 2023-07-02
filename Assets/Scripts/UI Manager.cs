@@ -1,12 +1,9 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
 using System;
 using Unity.Mathematics;
-//using UnityEngine.Profiling.Memory.Experimental;
 
 public class UIManager : MonoBehaviour
 {
@@ -32,9 +29,6 @@ public class UIManager : MonoBehaviour
     public bool wasTheEndOfTheWorld = false; // Была ли нажата кнопка стоп
     private float width;
     private float height;
-    private readonly List<string> normalTexts = new() { "Введите количество...", "Введите количество...",
-                                                "Введите количество...", "Введите количество..." };
-    private readonly List<string> errorTexts = new() { "0 < N <= 40", "0 < N <= 40", "0 <= N <= 40", "0 < N <= 100" };
 
     void Awake()
     {
@@ -42,12 +36,10 @@ public class UIManager : MonoBehaviour
         width = 2*secondpanel.transform.localPosition.x;// / canvas.scaleFactor;
         height = Screen.height;// / canvas.scaleFactor;
     }
-
     private void OnEnable()
     {
         Creature.WasClicked += InfoPanelShow; // Подписка на событие TheEndOfTheWorld
     }
-
     public void SaveData() // Метод, сохраняющий все введенные данные
     {
         dataIsOK = true;
@@ -264,7 +256,6 @@ public class UIManager : MonoBehaviour
         if (dataIsOK && wasTheEndOfTheWorld)
             DataIsDone?.Invoke();
     }
-
     public void Pause() // Метод, приостанавливающий все события
     {
         if (!isPaused && isStarted)
@@ -280,7 +271,6 @@ public class UIManager : MonoBehaviour
             Time.timeScale = 1f;
         }
     }
-
     public void StopWasClicked() //Метод, вызываемый при нажатии кнопки Stop
     {
         isStarted = false;
@@ -306,7 +296,7 @@ public class UIManager : MonoBehaviour
         size = 1f;
         time = 1f;
         timeOfPlantsRespawn = 20f;
-}
+    }
     public int GetnumberOfHerbivores()
     {
         if(dataIsOK)
@@ -393,35 +383,5 @@ public class UIManager : MonoBehaviour
     public void Close()
     {
         Application.Quit();
-    }
-    public void IntCheckCorrect(TMP_InputField inputField, TextMeshProUGUI someText, int min, int max, int number, int i)
-    {
-        if (int.Parse(scavengersInputField.text) >= min && int.Parse(scavengersInputField.text) <= max)
-        {
-            inputField.placeholder.GetComponent<TextMeshProUGUI>().text = normalTexts[i];
-            someText.GetComponent<TextMeshProUGUI>().color = Color.white;
-            number = int.Parse(inputField.text);
-        }
-        else
-        {
-            inputField.text = "";
-            inputField.placeholder.GetComponent<TextMeshProUGUI>().text = errorTexts[i];
-            someText.GetComponent<TextMeshProUGUI>().color = Color.red;
-            dataIsOK = false;
-        }
-    }
-    public int FloatCheckCorrect(TMP_InputField inputField, float min, float max, float number)
-    {
-        if (inputField.text.Length > 0 && float.Parse(inputField.text) >= min && float.Parse(inputField.text) <= max)
-        {
-            number = float.Parse(inputField.text);
-            return 0;
-        }
-        else if (inputField.text.Length > 0)
-        {
-            dataIsOK = false;
-            return 1;
-        }
-        return 0;
     }
 }
