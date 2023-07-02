@@ -7,7 +7,7 @@ public class Herbivore : Creature
 {
     void Start() // Метод, вызываемый при воспроизведении первого кадра
     {
-        Born(); // Устанавливает исходные значения всех полей
+        Born();
         Move();
     }
     private void Update()
@@ -17,40 +17,6 @@ public class Herbivore : Creature
             Move();
         }
     }
-    private void Move()
-    {
-        if (Spawner.Singleton.plantList.Count == 0)
-        {
-            targetPosition = GetRandomPositionOnScreen();
-        }
-        else
-        {
-            int index = FindNearestPositionIndex();
-            targetPosition = Spawner.Singleton.plantList[index];
-        }
-        isMoving = true;
-    }
-    private int FindNearestPositionIndex()
-    {
-        int index = 0;
-        float minDistance = Vector2.Distance(transform.position, Spawner.Singleton.plantList[0]);
-        for (int i = 1; i < Spawner.Singleton.plantList.Count; i++)
-        {
-            float distance = Vector2.Distance(transform.position, Spawner.Singleton.plantList[i]);
-            if (distance < minDistance)
-            {
-                minDistance = distance;
-                index = i;
-            }
-        }
-        return index;
-    }
-    private Vector2 GetRandomPositionOnScreen()
-    {
-        Vector2 randomPosition = new (Random.Range(0f, UIManager.Singleton.GetWidth()),
-            Random.Range(0f, UIManager.Singleton.GetHeight()));
-        return Camera.main.ScreenToWorldPoint(randomPosition);
-    }
     private void FixedUpdate()
     {
         if (isMoving)
@@ -58,6 +24,7 @@ public class Herbivore : Creature
             Vector2 currentPosition = rb.position;
             Vector2 direction = (targetPosition - currentPosition).normalized;
             float distance = Vector2.Distance(currentPosition, targetPosition);
+
             if (distance > 0.1f)
             {
                 rb.MovePosition(currentPosition + speed * Time.fixedDeltaTime * direction);
@@ -68,10 +35,44 @@ public class Herbivore : Creature
             }
         }
     }
-    public override void Move(Vector2 newPosition) // Метод передвижения
+    private void Move()
     {
-        targetPosition = Camera.main.ScreenToWorldPoint(newPosition);
+        if (Spawner.Singleton.plantList.Count == 0)
+        {
+            targetPosition = new Vector2(Random.Range(-10f, 10f), Random.Range(-10f, 10f));
+        }
+        else
+        {
+            int index = FindNearestPositionIndex();
+            targetPosition = Spawner.Singleton.plantList[index];
+        }
+
         isMoving = true;
+    }
+    private int FindNearestPositionIndex()
+    {
+        float minDistance = float.MaxValue;
+        int index = 0;
+
+        for (int i = 0; i < Spawner.Singleton.plantList.Count; i++)
+        {
+            float distance = Vector2.Distance(transform.position, Spawner.Singleton.plantList[i]);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                index = i;
+            }
+        }
+
+        return index;
+    }
+    // Метод, реагирующий на контакты с другими объектами
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        Vector2 newtargetPosition = new(UnityEngine.Random.Range(0f, UIManager.Singleton.GetWidth()),
+           UnityEngine.Random.Range(0f, UIManager.Singleton.GetHeight()));
+        targetPosition = newtargetPosition;
+        Move();
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Unity.Burst.Intrinsics;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -23,20 +25,8 @@ abstract public class Creature : MonoBehaviour
     {
         SetData();
     }
-    void Start() // Метод, вызываемый при воспроизведении первого кадра
-    {
-        Born();
-        Move(targetPosition);
-    }
-    // Метод, реагирующий на контакты с другими объектами
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        Vector2 newtargetPosition = new (UnityEngine.Random.Range(0f, UIManager.Singleton.GetWidth()),
-           UnityEngine.Random.Range(0f, UIManager.Singleton.GetHeight()));
-        targetPosition = newtargetPosition;
-        Move(newtargetPosition);
-    }
-        private void OnEnable()
+    
+    private void OnEnable()
     {
         UIManager.TheEndOfTheWorld += Die; // Подписка на событие TheEndOfTheWorld
     }
@@ -44,7 +34,6 @@ abstract public class Creature : MonoBehaviour
     {
         UIManager.TheEndOfTheWorld -= Die; // Отписка от события TheEndOfTheWorld
     }
-    public abstract void Move(Vector2 newPosition); // Метод передвижения
     public void Decreaseenergy() // Метод утраты энергии
     {
         energy--;
@@ -154,10 +143,21 @@ abstract public class Creature : MonoBehaviour
     }
     public void OnMouseDown()
     {
+        int countOfHerbivores, countOfPredators, countOfScavengers, countOfPlants;
+        GameObject[] arr = GameObject.FindGameObjectsWithTag("Herbivore");
+        countOfHerbivores = arr.Count();
+        arr = GameObject.FindGameObjectsWithTag("Predator");
+        countOfPredators = arr.Count();
+        arr = GameObject.FindGameObjectsWithTag("Scavenger");
+        countOfScavengers = arr.Count();
+        arr = GameObject.FindGameObjectsWithTag("Plant");
+        countOfPlants = arr.Count();
         string str = "Скорость: " + speed + "\nРазмер: " + size + "\nСтартовая энергия: " + startenergy + 
             "\nТекущая энерия: " + energy +
             "\nВремя, за которое расходуется 1 ед. энергии: " + time + "\nШанс мутации потомка: " +
-            chanceOfMutation + "%\nЦвет: " + GetComponent<SpriteRenderer>().color.ToString();
+            chanceOfMutation + "%\nЦвет: " + GetComponent<SpriteRenderer>().color.ToString() + 
+            "\nКоличество травоядных: " + countOfHerbivores + "\nКоличество хищников: " + countOfPredators
+             + "\nКоличество падальщиков: " + countOfScavengers + "\nКоличество растений: " + countOfPlants;
         WasClicked?.Invoke(str);
     }
     public float GetSize() { return size; }

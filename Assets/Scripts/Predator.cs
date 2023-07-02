@@ -4,10 +4,15 @@ using UnityEngine;
 
 public class Predator : Creature
 {
+    void Start() // Метод, вызываемый при воспроизведении первого кадра
+    {
+        Born();
+        Move(targetPosition);
+    }
     void FixedUpdate() // 
     {
         if (isMoving)
-        { // Тут движение
+        { // Тут передвижение
             Vector2 currentPosition = rb.position;
             Vector2 direction = (targetPosition - currentPosition).normalized;
             float distance = Vector2.Distance(currentPosition, targetPosition);
@@ -28,6 +33,19 @@ public class Predator : Creature
             targetPosition = newtargetPosition;
             Move(newtargetPosition);
         }
+    }
+    // Метод, реагирующий на контакты с другими объектами
+    //void OnCollisionEnter2D(Collision2D collision)
+    //{
+     //   Vector2 newtargetPosition = new(UnityEngine.Random.Range(0f, UIManager.Singleton.GetWidth()),
+     //      UnityEngine.Random.Range(0f, UIManager.Singleton.GetHeight()));
+    //    targetPosition = newtargetPosition;
+    //    Move(newtargetPosition);
+   // }
+    public void Move(Vector2 newPosition) // Метод передвижения
+    {
+        targetPosition = Camera.main.ScreenToWorldPoint(newPosition);
+        isMoving = true;
     }
     void OnCollisionEnter2D(Collision2D collision)
     {
@@ -51,10 +69,5 @@ public class Predator : Creature
                     Multiply();
             }
         }
-    }
-    public override void Move(Vector2 newPosition) // Метод передвижения
-    {
-        targetPosition = Camera.main.ScreenToWorldPoint(newPosition);
-        isMoving = true;
     }
 }
